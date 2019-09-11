@@ -58,7 +58,7 @@ class EscapeRoomCommandHandler:
             if not object["open"]:
                 look_result = "You can't do that! It's closed!"
             else:
-                self._run_triggers(object, "look in")
+                self._run_triggers(object, "open")
                 look_result = "Inside the {} you see: {}".format(object.name, listFormat(object["container"].values()))
         else:
             self._run_triggers(object, "look")
@@ -264,7 +264,7 @@ class EscapeRoomGame:
         door.triggers.append(lambda obj, cmd, *args: (cmd == "open") and room["container"].__delitem__(player.name))
         room.triggers.append(lambda obj, cmd, *args: (cmd == "_post_command_") and advance_time(room, clock))
         # TODO, the chest needs some triggers. This is for a later exercise
-        chest.triggers.append(lambda obj, cmd, *args: (cmd == "look in") and hammer.__setitem__("visible", True))
+        chest.triggers.append(lambda obj, cmd, *args: (cmd == "open") and hammer.__setitem__("visible", True))
         chest.triggers.append(lambda obj, cmd, *args: (cmd == "open") and chest.__setitem__("description",
                                                                                             create_chest_description(
                                                                                                 door)))

@@ -130,7 +130,6 @@ class EscapeRoomCommandHandler:
             else:
                 container = self.room
             object = container["container"] and container["container"].get(get_args[0], None) or None
-
             success_result = "You got it"
             get_result = (
                     ((not container or container["container"] == False) and "You can't get something out of that!") or
@@ -261,7 +260,11 @@ class EscapeRoomGame:
         door.triggers.append(lambda obj, cmd, *args: (cmd == "open") and room["container"].__delitem__(player.name))
         room.triggers.append(lambda obj, cmd, *args: (cmd == "_post_command_") and advance_time(room, clock))
         # TODO, the chest needs some triggers. This is for a later exercise
+        chest.triggers.append(lambda obj, cmd, *args: (cmd == "open") and chest.__setitem__("description",
+                                                                                            create_chest_description(
+                                                                                                chest)))
         chest.triggers.append(lambda obj, cmd, *args: (cmd == "look in") and hammer.__setitem__("visible", True))
+
 
         self.room, self.player = room, player
         self.command_handler = self.command_handler_class(room, player, self.output)
