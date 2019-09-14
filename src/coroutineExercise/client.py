@@ -11,7 +11,7 @@ class EchoClientProtocol(asyncio.Protocol):
 
     def data_received(self, data):
         print(data.decode())
-        respond = data.decode()
+        respond = data.decode().split("<EOL\n>")
 
         # Define the command list
         command_list = ["SUBMIT,Tianshi Feng,tfeng7@jhu.edu,team 4,1024", "look mirror", "get hairpin","unlock chest with hairpin",
