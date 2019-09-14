@@ -15,7 +15,7 @@ class EchoClientProtocol(asyncio.Protocol):
 
         # Define the command list
         command_list = ["SUBMIT,Tianshi Feng,tfeng7@jhu.edu,team 4,1024", "look mirror", "get hairpin","unlock chest with hairpin",
-                        "open chest", "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key"
+                        "open chest", "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key",
                         "open door"]
 
         if self.flag <= len(command_list) - 1:
