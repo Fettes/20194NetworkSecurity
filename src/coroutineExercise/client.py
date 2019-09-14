@@ -28,13 +28,7 @@ class EchoClientProtocol(asyncio.Protocol):
                 command = self.send_message(command_list[self.flag])
                 self.transport.write(command.encode())
                 self.flag = self.flag + 1
-        time.sleep(0.5)
-
-        # if self.flag <= len(command_list)-1:
-        #     command = self.send_message(command_list[self.flag])
-        #     self.transport.write(command.encode())
-        #     self.flag = self.flag + 1
-        # time.sleep(0.25)
+        time.sleep(1)
 
     def send_message(self, message):
         command = message + "<EOL>\n"
