@@ -21,7 +21,7 @@ class EchoClientProtocol(asyncio.Protocol):
         if self.flag <= len(command_list) - 1:
             command = self.send_message(command_list[self.flag])
             self.transport.write(command.encode())
-            if respond == "You can't reach it up there!" or respond == "It's too low to hit.":
+            if respond == "You can't reach it up there!" or respond == "It's too low to hit." or respond == "You can't hit that!":
                 self.flag = self.flag
             else:
                 self.flag = self.flag + 1
