@@ -55,7 +55,6 @@ class EscapeRoomCommandHandler:
             if not object["open"]:
                 look_result = "You can't do that! It's closed!"
             else:
-                self._run_triggers(object, "look in")
                 look_result = "Inside the {} you see: {}".format(object.name, listFormat(object["container"].values()))
         else:
             self._run_triggers(object, "look")
@@ -126,9 +125,9 @@ class EscapeRoomCommandHandler:
             return self.output("Unlock {} with what?".format(hit_args[0]))
         else:
             object = self.room["container"].get(hit_args[0], None)
+            key_object = self.room["container"].get("key", None)
             hit_flag = False
 
-            success_result = "You hit the {}.".format(object.name)
             if not object or not object["visible"]:
                 hit_result = "You don't see that."
             elif not object["hittable"]:
@@ -146,9 +145,9 @@ class EscapeRoomCommandHandler:
                     hit_flag = True
 
             if hit_flag:
-                hit_result = "You hear a sound:'Ding~~'.You hit it down!"
+                hit_result = "You hear a sound:'Ding~~'.You hit {} down!".format(object.name)
                 object["hit"] = True
-                self._run_triggers(object, "keychange", hitter)
+                self._run_triggers(key_object, "keychange", hitter)
                 self._run_triggers(object, "flyingkeychange", hitter)
         self.output(hit_result)
 
@@ -266,12 +265,12 @@ class EscapeRoomGame:
         hairpin = EscapeRoomObject("hairpin", visible=False, gettable=True, hittable=False)
         hammer = EscapeRoomObject("hammer", visible=False, gettable=True)
         key = EscapeRoomObject("key", visible=False, gettable=True, hittable=False)
-        flyingkey = EscapeRoomObject("flyingkey",visible=True, gettable=False, hit=False, hittable=True,
+        flyingkey = EscapeRoomObject("flyingkey", visible=True, gettable=False, hit=False, hittable=True,
                                      hitters=[hammer])
         door = EscapeRoomObject("door", visible=True, openable=True, open=False, keyed=True, locked=True,
                                 hittable=False, unlockers=[key])
         chest = EscapeRoomObject("chest", visible=True, openable=True, open=False, keyed=True, locked=True,
-                                 hittable=False,unlockers=[hairpin])
+                                 hittable=False, unlockers=[hairpin])
         room = EscapeRoomObject("room", visible=True)
         player = EscapeRoomObject("player", visible=False, alive=True)
 
@@ -299,9 +298,10 @@ class EscapeRoomGame:
         chest.triggers.append(lambda obj, cmd, *args: (cmd == "open") and chest.__setitem__("description",
                                                                                             create_chest_description(
                                                                                                 chest)))
-        chest.triggers.append(lambda obj, cmd, *args: (cmd == "look in") and hammer.__setitem__("visible", True))
+        chest.triggers.append(lambda obj, cmd, *args: (cmd == "open") and hammer.__setitem__("visible", True))
         key.triggers.append(lambda obj, cmd, *args: (cmd == "keychange") and key.__setitem__("visible", True))
-        flyingkey.triggers.append(lambda obj, cmd, *args: (cmd == "flyingkeychange") and flyingkey.__setitem__("visible", False))
+        flyingkey.triggers.append(
+            lambda obj, cmd, *args: (cmd == "flyingkeychange") and flyingkey.__setitem__("visible", False))
 
         self.room, self.player = room, player
         self.command_handler = self.command_handler_class(room, player, self.output)

@@ -409,7 +409,6 @@ async def main(args):
     flush_output(">> ", end='')
 
     loop.add_reader(sys.stdin, game_next_input, game)
-    x.()
     await asyncio.wait([asyncio.ensure_future(a) for a in game.agents])
 
 

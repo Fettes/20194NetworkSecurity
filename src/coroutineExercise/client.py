@@ -11,11 +11,21 @@ class EchoClientProtocol(asyncio.Protocol):
 
     def data_received(self, data):
         print(data.decode())
+        respond = data.decode()
 
         # Define the command list
         command_list = ["SUBMIT,Tianshi Feng,tfeng7@jhu.edu,team 4,1024", "look mirror", "get hairpin","unlock chest with hairpin",
                         "open chest", "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key"
                         "open door"]
+        while True:
+            if self.flag <= len(command_list) - 1:
+                command = self.send_message(command_list[self.flag])
+                self.transport.write(command.encode())
+                if respond == "You can't reach it up there!" or respond == "It's too low to hit.":
+                    continue
+                else:
+                    self.flag = self.flag + 1
+            time.sleep(0.5)
 
         # if self.flag <= len(command_list)-1:
         #     command = self.send_message(command_list[self.flag])
