@@ -361,6 +361,8 @@ class EscapeRoomGame:
         #  - self.status, you'll need to stop when no longer playing
         #  - check if the flyingkey is still flying
         #  - of course, "move_flyingkey"
+        print("in")
+        await asyncio.sleep(3)
         pass
 
     def start(self):
@@ -408,7 +410,7 @@ async def main(args):
     game.start()
     flush_output(">> ", end='')
 
-    loop.add_reader(sys.stdin, game_next_input, game)
+    # loop.add_reader(sys.stdin, game_next_input, game)
     await asyncio.wait([asyncio.ensure_future(a) for a in game.agents])
 
 
