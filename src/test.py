@@ -19,10 +19,10 @@ class EchoClientProtocol(asyncio.Protocol):
         print('Stop the event loop')
         self.loop.stop()
 
+
 loop = asyncio.get_event_loop()
 
 coro = loop.create_connection(lambda: EchoClientProtocol(loop), '192.168.200.52', 19004)
-#coro = loop.create_connection(lambda: EchoClientProtocol(loop), 'localhost', 1024)
 loop.run_until_complete(coro)
 loop.run_forever()
 loop.close()
