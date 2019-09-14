@@ -19,11 +19,14 @@ class EchoClientProtocol(asyncio.Protocol):
                         "open door"]
 
         if self.flag <= len(command_list) - 1:
-            command = self.send_message(command_list[self.flag])
-            self.transport.write(command.encode())
-            if respond[0] == "You can't reach it up there!" or respond[0] == "It's too low to hit." or respond[0] == "You can't hit that!":
+            if respond[0] == "You can't hit that!":
                 self.flag = self.flag - 1
+                command = self.send_message(command_list[self.flag])
+                self.transport.write(command.encode())
+                self.flag = self.flag + 1
             else:
+                command = self.send_message(command_list[self.flag])
+                self.transport.write(command.encode())
                 self.flag = self.flag + 1
         time.sleep(0.5)
 
