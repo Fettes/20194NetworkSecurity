@@ -398,8 +398,8 @@ class EchoServerClientProtocol(asyncio.Protocol):
     def connection_made(self, transport):
         self.transport = transport
         self.game = EscapeRoomGame()
-        self.game.create_game()
         self.game.output = self.send_message
+        self.game.create_game()
         self.game.start()
         self.loop = asyncio.get_event_loop()
         self.loop.create_task(self.agent())
@@ -408,9 +408,9 @@ class EchoServerClientProtocol(asyncio.Protocol):
         message = data.decode()
         command = message.split("<EOL>\n")
         for i in command:
-            if (i != ""):
+            if i != "":
                 print(i)
-                self.game.command(i)
+                output = self.game.command(i)
 
         if self.game.status == "escaped":
             print("Success")
