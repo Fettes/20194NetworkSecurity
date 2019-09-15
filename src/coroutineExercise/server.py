@@ -408,7 +408,7 @@ class EchoServerClientProtocol(asyncio.Protocol):
         message = data.decode()
         command = message.split("<EOL>\n")
         for i in command:
-            if i != "":
+            if (i != ""):
                 print(i)
                 output = self.game.command(i)
 
