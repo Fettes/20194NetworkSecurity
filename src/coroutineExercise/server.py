@@ -5,7 +5,7 @@ import random, sys
 import socket
 import time
 import asyncio
-
+import playground
 
 def create_container_contents(*escape_room_objects):
     return {obj.name: obj for obj in escape_room_objects}
@@ -403,6 +403,7 @@ class EchoServerClientProtocol(asyncio.Protocol):
         self.game.start()
         self.loop = asyncio.get_event_loop()
         self.loop.create_task(self.agent())
+        self.transport.write(("<EOL>\n").encode())
 
     def data_received(self, data):
         message = data.decode()
@@ -442,7 +443,7 @@ def flush_output(*args, **kargs):
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     # Each client connection will create a new protocol instance
-    coro = loop.create_server(EchoServerClientProtocol, '192.168.200.116', 1024)
+    coro = playground.create_server(EchoServerClientProtocol, 'localhost',1024)
     server = loop.run_until_complete(coro)
 
     # Serve requests until Ctrl+C is pressed
