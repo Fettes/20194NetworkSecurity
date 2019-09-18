@@ -11,7 +11,7 @@ class EchoClientProtocol(asyncio.Protocol):
 
     def data_received(self, data):
         print(data.decode())
-        command = "RESULT,c4dbfdb369da17452b5c3539444bb70e47300d86c4967e20284dccc04faaba24"
+        command = "RESULT,eaeb54074736bd4bff6c03428f937a7d7e8c9c918f1389798d5c52c6b4a3c808"
         self.transport.write(command.encode())
 
     def connection_lost(self, exc):
