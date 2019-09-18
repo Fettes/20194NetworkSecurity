@@ -394,14 +394,15 @@ class EscapeRoomGame:
 
 
 class EchoServerClientProtocol(asyncio.Protocol):
+    def __init__(self):
+        self.loop = asyncio.get_event_loop()
+        self.game = EscapeRoomGame()
 
     def connection_made(self, transport):
         self.transport = transport
-        self.game = EscapeRoomGame()
         self.game.output = self.send_message
         self.game.create_game()
         self.game.start()
-        self.loop = asyncio.get_event_loop()
         self.loop.create_task(self.agent())
         self.transport.write(("<EOL>\n").encode())
 
