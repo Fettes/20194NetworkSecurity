@@ -1,5 +1,6 @@
 import asyncio
 import time
+import playground
 
 class EchoClientProtocol(asyncio.Protocol):
     def __init__(self, loop):
@@ -8,6 +9,7 @@ class EchoClientProtocol(asyncio.Protocol):
 
     def connection_made(self, transport):
         self.transport = transport
+        self.transport.write(("<EOL>\n").encode())
 
     def data_received(self, data):
         print(data.decode())
@@ -42,7 +44,7 @@ class EchoClientProtocol(asyncio.Protocol):
 
 loop = asyncio.get_event_loop()
 
-coro = loop.create_connection(lambda: EchoClientProtocol(loop), '192.168.200.52', 19004)
+coro = playground.create_connection(lambda: EchoClientProtocol(loop), '20194.0.0.19000', 19005)
 #coro = loop.create_connection(lambda: EchoClientProtocol(loop), 'localhost', 1024)
 loop.run_until_complete(coro)
 loop.run_forever()
