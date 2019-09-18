@@ -9,7 +9,7 @@ class EchoClientProtocol(asyncio.Protocol):
 
     def connection_made(self, transport):
         self.transport = transport
-        self.transport.write(("<EOL>\n").encode())
+        self.transport.write("<EOL>\n".encode())
 
     def data_received(self, data):
         print(data.decode())
