@@ -3,12 +3,14 @@ import time
 import playground
 
 from autograder_ex6_packets import AutogradeStartTest
+from autograder_ex6_packets import AutogradeTestStatus
 
 
 class EchoClientProtocol(asyncio.Protocol):
     def __init__(self, loop):
         self.flag = 0
         self.loop = loop
+        self.deserializer = AutogradeTestStatus.Deserializer()
 
     def connection_made(self, transport):
         self.transport = transport
@@ -22,25 +24,30 @@ class EchoClientProtocol(asyncio.Protocol):
         self.transport.write(packetClient.__serialize__())
 
     def data_received(self, data):
-        print(data.decode())
-        respond = data.decode().split("<EOL>\n")
+        self.deserializer.update(data)
+        for echoPacket in self.deserializer.nextPackets():
+            print(echoPacket)
 
-        # Define the command list
-        command_list = ["SUBMIT,Tianshi Feng,tfeng7@jhu.edu,team 4,1024", "look mirror", "get hairpin","unlock chest with hairpin",
-                        "open chest", "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key",
-                        "open door"]
 
-        if self.flag <= len(command_list) - 1:
-            if respond[0] == "You can't hit that!":
-                self.flag = self.flag - 1
-                command = self.send_message(command_list[self.flag])
-                self.transport.write(command.encode())
-                self.flag = self.flag + 1
-            else:
-                command = self.send_message(command_list[self.flag])
-                self.transport.write(command.encode())
-                self.flag = self.flag + 1
-        time.sleep(1)
+        # print(data.decode())
+        # respond = data.decode().split("<EOL>\n")
+        #
+        # # Define the command list
+        # command_list = ["SUBMIT,Tianshi Feng,tfeng7@jhu.edu,team 4,1024", "look mirror", "get hairpin","unlock chest with hairpin",
+        #                 "open chest", "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key",
+        #                 "open door"]
+        #
+        # if self.flag <= len(command_list) - 1:
+        #     if respond[0] == "You can't hit that!":
+        #         self.flag = self.flag - 1
+        #         command = self.send_message(command_list[self.flag])
+        #         self.transport.write(command.encode())
+        #         self.flag = self.flag + 1
+        #     else:
+        #         command = self.send_message(command_list[self.flag])
+        #         self.transport.write(command.encode())
+        #         self.flag = self.flag + 1
+        # time.sleep(1)
 
     def send_message(self, message):
         command = message + "<EOL>\n"
