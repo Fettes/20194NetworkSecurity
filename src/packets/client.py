@@ -2,7 +2,7 @@ import asyncio
 import time
 import playground
 
-from src.packets.autograder_ex6_packets import AutogradeStartTest
+from autograder_ex6_packets import AutogradeStartTest
 
 
 class EchoClientProtocol(asyncio.Protocol):
