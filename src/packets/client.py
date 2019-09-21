@@ -16,7 +16,6 @@ class EchoClientProtocol(asyncio.Protocol):
 
     def connection_made(self, transport):
         self.transport = transport
-        # self.transport.write("<EOL>\n".encode())
         packetClient = AutogradeStartTest()
         packetClient.name = "Tianshi Feng"
         packetClient.team = 4
@@ -25,6 +24,7 @@ class EchoClientProtocol(asyncio.Protocol):
         with open("escape_room_packets.py", "rb") as f:
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
+        self.transport.write("<EOL>\n".encode())
 
     def data_received(self, data):
         self.deserializer.update(data)
