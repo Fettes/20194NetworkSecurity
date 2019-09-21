@@ -1,42 +1,42 @@
 from playground.network.packet import PacketType
-from playground.network.packet.fieldtypes import UINT8, STRING, BUFFER, UINT16, BOOL, LIST[STRING]
+from playground.network.packet.fieldtypes import UINT8, STRING, BUFFER, UINT16, BOOL, STRING, LIST[STRING]
 from playground.network.packet.fieldtypes.attributes import Optional
 
 
 
 class GameCommandPacket(PacketType):
-    DEFINITION_IDENTIFIER =  # whatever you want
-    DEFINITION_VERSION =  # whatever you want
+    DEFINITION_IDENTIFIER =  "20194.exercise6.gameclient"
+    DEFINITION_VERSION =  "1.0"
 
     FIELDS = [
-        # whatever you want here
+        ("command_line", STRING),
     ]
 
     @classmethod
     def create_game_command_packet(cls, s):
-        return cls(  # whatever arguments needed to construct the packet)
+        return cls(command_line = s)
 
     def command(self):
-        return  # whatever you need to get the command for the game
+        return self.command
 
 
 class GameResponsePacket(PacketType):
-    DEFINITION_IDENTIFIER =  # whatever you want
-    DEFINITION_VERSION =  # whatever you want
+    DEFINITION_IDENTIFIER =  "20194.exercise6.gameserver"
+    DEFINITION_VERSION =  "1.0"
 
     FIELDS = [
-        # whatever you want here
+        ("response", STRING),
+        ("status", STRING),
     ]
 
     @classmethod
     def create_game_response_packet(cls, response, status):
-        return cls(  # whatever you need to construct the packet )
-
+        return cls(response=response, status=status)
     def game_over(self):
-        return  # whatever you need to do to determine if the game is over
+        return  "Game over 37"
 
     def status(self):
-        return  # whatever you need to do to return the status
+        return self.status
 
     def response(self):
-        return  # whatever you need to do to return the response
+        return self.response

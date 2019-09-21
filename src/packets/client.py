@@ -11,6 +11,8 @@ class EchoClientProtocol(asyncio.Protocol):
         self.flag = 0
         self.loop = loop
         self.deserializer = AutogradeTestStatus.Deserializer()
+        self.command_list = ["look mirror", "get hairpin","unlock chest with hairpin", "open chest",
+                             "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key", "open door"]
 
     def connection_made(self, transport):
         self.transport = transport
@@ -20,13 +22,17 @@ class EchoClientProtocol(asyncio.Protocol):
         packetClient.team = 4
         packetClient.email = "tfeng7@jhu.edu"
         packetClient.port = 1024
-        packetClient.packet_file = b""
+        with open("escape_room_packets.py", "rb") as f:
+            packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
 
     def data_received(self, data):
         self.deserializer.update(data)
         for echoPacket in self.deserializer.nextPackets():
-            print(echoPacket)
+            print(echoPacket.error)
+
+
+
 
 
         # print(data.decode())
