@@ -5,6 +5,7 @@ import playground
 from autograder_ex6_packets import AutogradeStartTest
 from autograder_ex6_packets import AutogradeTestStatus
 from escape_room_packets import GameCommandPacket
+from escape_room_packets import GameResponsePacket
 
 
 
@@ -12,9 +13,11 @@ class EchoClientProtocol(asyncio.Protocol):
     def __init__(self, loop):
         self.flag = 0
         self.loop = loop
-        self.deserializer = AutogradeTestStatus.Deserializer()
+        self.deserializer1 = AutogradeTestStatus.Deserializer()
+        self.deserializer2 = GameResponsePacket.Deserializer()
         self.command_list = ["look mirror", "get hairpin","unlock chest with hairpin", "open chest",
                              "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key", "open door"]
+        self.flag = 0
 
     def connection_made(self, transport):
         self.transport = transport
@@ -29,11 +32,13 @@ class EchoClientProtocol(asyncio.Protocol):
         self.transport.write("<EOL>\n".encode())
 
     def data_received(self, data):
-        self.deserializer.update(data)
-        for echoPacket in self.deserializer.nextPackets():
+        self.deserializer1.update(data)
+        for echoPacket in self.deserializer1.nextPackets():
             print(echoPacket.client_status)
-            message_packet = GameCommandPacket.create_game_command_packet(self.command_list[0])
-            self.transport.write(message_packet.__serialize__())
+        response = GameResponsePacket.response()
+        print(response)
+
+
 
 
         # print(data.decode())
