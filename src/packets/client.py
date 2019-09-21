@@ -26,7 +26,7 @@ class EchoClientProtocol(asyncio.Protocol):
         with open("escape_room_packets.py", "rb") as f:
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
-        # self.transport.write("<EOL>\n".encode())
+        self.transport.write("<EOL>\n".encode())
 
     def data_received(self, data):
         self.deserializer.update(data)
