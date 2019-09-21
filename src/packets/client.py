@@ -4,6 +4,8 @@ import playground
 
 from autograder_ex6_packets import AutogradeStartTest
 from autograder_ex6_packets import AutogradeTestStatus
+from escape_room_packets import GameCommandPacket
+
 
 
 class EchoClientProtocol(asyncio.Protocol):
@@ -24,15 +26,14 @@ class EchoClientProtocol(asyncio.Protocol):
         with open("escape_room_packets.py", "rb") as f:
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
-        self.transport.write("<EOL>\n".encode())
+        # self.transport.write("<EOL>\n".encode())
 
     def data_received(self, data):
         self.deserializer.update(data)
         for echoPacket in self.deserializer.nextPackets():
-            print(echoPacket.error)
-
-
-
+            print(echoPacket.client_status)
+            message_packet = GameCommandPacket.create_game_command_packet(self.command_list[0])
+            self.transport.write(message_packet.__serialize__())
 
 
         # print(data.decode())
