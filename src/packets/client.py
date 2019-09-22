@@ -36,12 +36,19 @@ class EchoClientProtocol(asyncio.Protocol):
         for response_line in self.deserializer2.nextPackets():
             res_temp = response_line.response.split("<EOL>\n")
             print("response:"+ res_temp[0])
-
-            command_packet = GameCommandPacket()
-            command = command_packet.create_game_command_packet("look mirror<EOL>\n")
-
-            self.transport.write("look mirror<EOL>\n".encode())
-
+            if self.flag <= len(self.command_list) - 1:
+                if res_temp[0] == "You can't hit that!":
+                    self.flag = self.flag - 1
+                    command_packet = GameCommandPacket()
+                    command = command_packet.create_game_command_packet(self.command_list[self.flag] + "<EOL>\n")
+                    self.transport.write(command.__serialize__())
+                    self.flag = self.flag + 1
+                else:
+                    command_packet = GameCommandPacket()
+                    command = command_packet.create_game_command_packet(self.command_list[self.flag] + "<EOL>\n")
+                    self.transport.write(command.__serialize__())
+                    self.flag = self.flag + 1
+            time.sleep(0.5)
 
         self.deserializer1.update(data)
         for echoPacket in self.deserializer1.nextPackets():
@@ -66,10 +73,6 @@ class EchoClientProtocol(asyncio.Protocol):
         #         self.transport.write(command.encode())
         #         self.flag = self.flag + 1
         # time.sleep(1)
-
-    def send_message(self, message):
-        command = message + "<EOL>\n"
-        return command
 
     def connection_lost(self, exc):
         print('The server closed the connection')
