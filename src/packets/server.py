@@ -10,9 +10,6 @@ from autograder_ex6_packets import AutogradeTestStatus
 from escape_room_packets import GameCommandPacket
 from escape_room_packets import GameResponsePacket
 
-import escape_room_packets
-
-
 def create_container_contents(*escape_room_objects):
     return {obj.name: obj for obj in escape_room_objects}
 
@@ -402,26 +399,27 @@ class EscapeRoomGame:
 class EchoServerClientProtocol(asyncio.Protocol):
     def __init__(self):
         self.loop = asyncio.get_event_loop()
-        self.game = EscapeRoomGame(output=self.send_message)
+        self.game = EscapeRoomGame()
         self.deserializer = PacketType.Deserializer()
 
     def connection_made(self, transport):
         self.transport = transport
+        self.game.output = self.send_message
         self.game.create_game()
         self.game.start()
         self.loop.create_task(self.agent())
 
-    def data_received(self, data_bytes):
-        self.deserializer.update(data_bytes)
-        data = list(self.deserializer.nextPackets())
-        print(data[0].command_line)
-        output = self.game.command(data[0].command_line)
+    def data_received(self, data):
+        self.deserializer.update(data)
+        for serverPacket in self.deserializer.nextPackets():
+            print(serverPacket.command_line)
+            output = self.game.command(serverPacket.command_line)
 
-    def output(self, str):
-        print(str)
-        time.sleep(0.5)
-        GameResponse = escape_room_packets.GameResponsePacket.create_game_response_packet(str, self.game.status)
-        self.transport.write(GameResponse.__serialize__())
+    def send_message(self, result):
+        print(result)
+        game_packet = GameResponsePacket()
+        res_temp = game_packet.create_game_response_packet(result, self.game.status)
+        self.transport.write(res_temp.__serialize__())
 
     async def agent(self):
         await asyncio.wait([asyncio.ensure_future(a) for a in self.game.agents])
@@ -445,8 +443,11 @@ def flush_output(*args, **kargs):
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     # Each client connection will create a new protocol instance
-    coro = playground.create_server(EchoServerClientProtocol, 'localhost', 1024)
+    coro = playground.create_server(EchoServerClientProtocol, 'localhost', 1028)
     server = loop.run_until_complete(coro)
+    loop.set_debug(enabled=True)
+    from playground.common.logging import EnablePresetLogging, PRESET_DEBUG
+    EnablePresetLogging(PRESET_DEBUG)
 
     # Serve requests until Ctrl+C is pressed
     print('Serving on {}'.format(server.sockets[0].getsockname()))
