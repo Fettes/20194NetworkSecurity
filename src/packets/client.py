@@ -35,6 +35,7 @@ class EchoClientProtocol(asyncio.Protocol):
         for clientPacket in self.deserializer.nextPackets():
             if isinstance(clientPacket, AutogradeTestStatus):
                 print(clientPacket.client_status)
+                print(clientPacket.error)
                 self.transport.write("".encode())
             if isinstance(clientPacket, GameResponsePacket):
                 res_temp = clientPacket.response
