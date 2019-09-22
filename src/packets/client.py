@@ -21,15 +21,16 @@ class EchoClientProtocol(asyncio.Protocol):
 
     def connection_made(self, transport):
         self.transport = transport
+        self.transport.write("<EOL>\n".encode())
         packetClient = AutogradeStartTest()
         packetClient.name = "Tianshi Feng"
         packetClient.team = 4
         packetClient.email = "tfeng7@jhu.edu"
         packetClient.port = 1024
-        with open("escape_room_packets.py", "r") as f:
+        with open("escape_room_packets.py", "rb") as f:
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
-        self.transport.write("<EOL>\n".encode())
+
 
     def data_received(self, data):
         self.deserializer2.update(data)
