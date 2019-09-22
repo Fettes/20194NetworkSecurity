@@ -32,6 +32,7 @@ class EchoClientProtocol(asyncio.Protocol):
 
     def data_received(self, data):
         self.deserializer.update(data)
+        self.transport.write("<EOL>\n".encode())
         for clientPacket in self.deserializer.nextPackets():
             if isinstance(clientPacket, AutogradeTestStatus):
                 print(clientPacket.client_status)
