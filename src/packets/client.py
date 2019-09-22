@@ -29,7 +29,7 @@ class EchoClientProtocol(asyncio.Protocol):
         with open("escape_room_packets.py", "rb") as f:
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
-        self.command_packet = GameCommandPacket.GameCommandPacket.create_game_command_packet("SUBMIT")
+        self.command_packet = GameCommandPacket.create_game_command_packet("SUBMIT")
         self.transport.write(self.command_packet.__serialize__())
 
     def data_received(self, data):
