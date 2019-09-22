@@ -12,8 +12,7 @@ class EchoClientProtocol(asyncio.Protocol):
     def __init__(self, loop):
         self.flag = 0
         self.loop = loop
-        self.deserializer1 = AutogradeTestStatus.Deserializer()
-        self.deserializer2 = GameResponsePacket.Deserializer()
+        self.deserializer = AutogradeTestStatus.Deserializer()
         self.command_list = ["look mirror", "get hairpin", "unlock chest with hairpin", "open chest",
                              "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key",
                              "open door"]
@@ -31,8 +30,8 @@ class EchoClientProtocol(asyncio.Protocol):
         self.transport.write(packetClient.__serialize__())
 
     def data_received(self, data):
-        self.deserializer2.update(data)
-        for response_line in self.deserializer2.nextPackets():
+        self.deserializer.update(data)
+        for response_line in self.deserializer.nextPackets():
             res_temp = response_line.response.split("<EOL>\n")
             print("response:" + res_temp[0])
             if self.flag <= len(self.command_list) - 1:
@@ -50,8 +49,8 @@ class EchoClientProtocol(asyncio.Protocol):
             time.sleep(0.5)
 
 
-        self.deserializer1.update(data)
-        for echoPacket in self.deserializer1.nextPackets():
+        self.deserializer.update(data)
+        for echoPacket in self.deserializer.nextPackets():
             print(echoPacket.client_status)
 
         # print(data.decode())
