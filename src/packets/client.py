@@ -36,7 +36,7 @@ class EchoClientProtocol(asyncio.Protocol):
             if isinstance(clientPacket, AutogradeTestStatus):
                 print(clientPacket.client_status)
                 print(clientPacket.error)
-                self.transport.write("".encode())
+                # self.transport.write("".encode())
             if isinstance(clientPacket, GameResponsePacket):
                 res_temp = clientPacket.response
                 print(clientPacket.response)
