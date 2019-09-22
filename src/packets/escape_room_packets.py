@@ -32,7 +32,7 @@ class GameResponsePacket(PacketType):
         return cls(response=response, status=status)
 
     def game_over(self):
-        return "Game over 36"
+        return self.status() != "playing"
 
     def status(self):
         return self.status
