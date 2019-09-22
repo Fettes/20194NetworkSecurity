@@ -6,7 +6,6 @@ from autograder_ex6_packets import AutogradeStartTest
 from autograder_ex6_packets import AutogradeTestStatus
 from escape_room_packets import GameCommandPacket
 from escape_room_packets import GameResponsePacket
-from playground.common.logging import EnablePresetLogging, PRESET_VERBOSE
 
 
 class EchoClientProtocol(asyncio.Protocol):
@@ -19,7 +18,6 @@ class EchoClientProtocol(asyncio.Protocol):
                              "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key",
                              "open door"]
         self.flag = 0
-        EnablePresetLogging(PRESET_VERBOSE)
 
     def connection_made(self, transport):
         self.transport = transport
@@ -83,7 +81,9 @@ class EchoClientProtocol(asyncio.Protocol):
 
 
 loop = asyncio.get_event_loop()
-
+loop.set_debug(enabled=True)
+from playground.common.logging import EnablePresetLogging, PRESET_VERBOSE
+EnablePresetLogging(PRESET_VERBOSE)
 coro = playground.create_connection(lambda: EchoClientProtocol(loop), '20194.0.0.19000', 19006)
 # coro = loop.create_connection(lambda: EchoClientProtocol(loop), 'localhost', 1024)
 loop.run_until_complete(coro)
