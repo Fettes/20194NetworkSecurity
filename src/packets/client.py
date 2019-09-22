@@ -14,7 +14,7 @@ class EchoClientProtocol(asyncio.Protocol):
         self.flag = 0
         self.loop = loop
         self.deserializer = PacketType.Deserializer()
-        self.command_list = ["","look mirror", "get hairpin", "unlock chest with hairpin", "open chest",
+        self.command_list = ["look mirror", "get hairpin", "unlock chest with hairpin", "open chest",
                              "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key",
                              "open door"]
         self.flag = 0
@@ -38,6 +38,10 @@ class EchoClientProtocol(asyncio.Protocol):
             if isinstance(clientPacket, GameResponsePacket):
                 res_temp = clientPacket.response.split("<EOL>\n")
                 print(res_temp)
+                command_packet = GameCommandPacket()
+                command_packet.command = ""
+                self.transport.write(command_packet.__serialize__())
+
                 if self.flag <= len(self.command_list) - 1:
                     if res_temp[0] == "You can't hit that!":
                         self.flag = self.flag - 1
