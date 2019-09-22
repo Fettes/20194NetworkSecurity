@@ -412,8 +412,9 @@ class EchoServerClientProtocol(asyncio.Protocol):
     def data_received(self, data):
         self.deserializer.update(data)
         for serverPacket in self.deserializer.nextPackets():
-            print(serverPacket.command_line)
-            output = self.game.command(serverPacket.command_line)
+            if serverPacket.command_line != "":
+                print(serverPacket.command_line)
+                output = self.game.command(serverPacket.command_line)
 
     def send_message(self, result):
         print(result)
@@ -443,11 +444,8 @@ def flush_output(*args, **kargs):
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     # Each client connection will create a new protocol instance
-    coro = playground.create_server(EchoServerClientProtocol, 'localhost', 1027)
+    coro = playground.create_server(EchoServerClientProtocol, 'localhost', 1028)
     server = loop.run_until_complete(coro)
-    loop.set_debug(enabled=True)
-    from playground.common.logging import EnablePresetLogging, PRESET_DEBUG
-    EnablePresetLogging(PRESET_DEBUG)
 
     # Serve requests until Ctrl+C is pressed
     print('Serving on {}'.format(server.sockets[0].getsockname()))
