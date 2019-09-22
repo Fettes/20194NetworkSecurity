@@ -31,6 +31,9 @@ class EchoClientProtocol(asyncio.Protocol):
 
     def data_received(self, data):
         self.deserializer.update(data)
+        for echoPacket in self.deserializer.nextPackets():
+            print(isinstance(echoPacket, AutogradeTestStatus))
+            print(echoPacket.client_status)
         # for response_line in self.deserializer.nextPackets():
         #     res_temp = response_line.response.split("<EOL>\n")
         #     print("response:" + res_temp[0])
