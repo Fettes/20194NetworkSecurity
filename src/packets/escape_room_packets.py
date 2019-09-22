@@ -12,6 +12,7 @@ class GameCommandPacket(PacketType):
 
     @classmethod
     def create_game_command_packet(cls, s):
+        print("15:" +s)
         return cls(command=s)
 
     def command(self):

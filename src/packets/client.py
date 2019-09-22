@@ -36,10 +36,10 @@ class EchoClientProtocol(asyncio.Protocol):
         for response_line in self.deserializer2.nextPackets():
             res_temp = response_line.response.split("<EOL>\n")
             print("response:"+ res_temp[0])
+
             command_packet = GameCommandPacket()
-            command_packet.command = "look mirror"
-            self.transport.write(command_packet.__serialize__())
-            break
+            command = command_packet.create_game_command_packet("look mirror")
+            self.transport.write(command.__serialize__())
 
 
         self.deserializer1.update(data)
