@@ -37,8 +37,8 @@ class EchoClientProtocol(asyncio.Protocol):
         print(self.deserializer2.update(data))
         for echoPacket in self.deserializer1.nextPackets():
             print(echoPacket.client_status)
-        response = GameResponsePacket.response()
-        print(response)
+        for echoPacket in self.deserializer2.nextPackets():
+            print(echoPacket.response)
 
 
 
