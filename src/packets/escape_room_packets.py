@@ -3,8 +3,8 @@ from playground.network.packet.fieldtypes import STRING
 
 
 class GameCommandPacket(PacketType):
-    DEFINITION_IDENTIFIER =  "20194.exercise6.gameclient"
-    DEFINITION_VERSION =  "1.0"
+    DEFINITION_IDENTIFIER = "20194.exercise6.gameclient"
+    DEFINITION_VERSION = "1.0"
 
     FIELDS = [
         ("command_line", STRING),
@@ -12,15 +12,15 @@ class GameCommandPacket(PacketType):
 
     @classmethod
     def create_game_command_packet(cls, s):
-        return cls(command_line = s)
+        return cls(command_line=s)
 
     def command(self):
         return self.command
 
 
 class GameResponsePacket(PacketType):
-    DEFINITION_IDENTIFIER =  "20194.exercise6.gameserver"
-    DEFINITION_VERSION =  "1.0"
+    DEFINITION_IDENTIFIER = "20194.exercise6.gameserver"
+    DEFINITION_VERSION = "1.0"
 
     FIELDS = [
         ("response", STRING),
@@ -30,8 +30,9 @@ class GameResponsePacket(PacketType):
     @classmethod
     def create_game_response_packet(cls, response, status):
         return cls(response=response, status=status)
+
     def game_over(self):
-        return  "Game over 37"
+        return "Game over 37"
 
     def status(self):
         return self.status
