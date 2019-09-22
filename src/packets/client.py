@@ -34,8 +34,8 @@ class EchoClientProtocol(asyncio.Protocol):
         for clientPacket in self.deserializer.nextPackets():
             if isinstance(clientPacket, AutogradeTestStatus):
                 print(clientPacket.client_status)
-                self.transport.write("<EOL>\n")
-            elif isinstance(clientPacket, GameResponsePacket):
+                self.transport.write("")
+            if isinstance(clientPacket, GameResponsePacket):
                 res_temp = clientPacket.response.split("<EOL>\n")
                 print(res_temp)
                 if self.flag <= len(self.command_list) - 1:
