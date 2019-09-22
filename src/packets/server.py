@@ -399,12 +399,11 @@ class EscapeRoomGame:
 class EchoServerClientProtocol(asyncio.Protocol):
     def __init__(self):
         self.loop = asyncio.get_event_loop()
-        self.game = EscapeRoomGame()
+        self.game = EscapeRoomGame(output=self.send_message)
         self.deserializer = PacketType.Deserializer()
 
     def connection_made(self, transport):
         self.transport = transport
-        self.game.output = self.send_message
         self.game.create_game()
         self.game.start()
         self.loop.create_task(self.agent())
