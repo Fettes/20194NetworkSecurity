@@ -414,8 +414,8 @@ class EchoServerClientProtocol(asyncio.Protocol):
     def data_received(self, data_bytes):
         self.deserializer.update(data_bytes)
         data = list(self.deserializer.nextPackets())
-        print(data[0].command)
-        output = self.game.command(data[0].command)
+        print(data[0].command_line)
+        output = self.game.command(data[0].command_line)
 
     def output(self, str):
         print(str)
