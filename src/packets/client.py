@@ -37,13 +37,12 @@ class EchoClientProtocol(asyncio.Protocol):
             res_temp = response_line.response.split("<EOL>\n")
             print("response:"+ res_temp[0])
             command_packet = GameCommandPacket()
-            command_packet.command = self.command_list[self.flag]
             command_sending = command_packet.create_game_command_packet(self.command_list[self.flag])
-            self.transport.write(command_packet.__serialize__())
+            self.transport.write(command_sending.__serialize__())
+            print(command_sending)
             break
 
 
-        command_sending = command_packet.create_game_command_packet(self.command_list[self.flag])
         self.deserializer1.update(data)
         for echoPacket in self.deserializer1.nextPackets():
             print(echoPacket.client_status)
