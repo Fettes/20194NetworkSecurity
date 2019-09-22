@@ -34,11 +34,10 @@ class EchoClientProtocol(asyncio.Protocol):
     def data_received(self, data):
         self.deserializer1.update(data)
         self.deserializer2.update(data)
-        print(self.deserializer2.update(data))
         for echoPacket in self.deserializer1.nextPackets():
             print(echoPacket.client_status)
-        for echoPacket in self.deserializer2.nextPackets():
-            print("response:"+ echoPacket.response)
+        for response_line in self.deserializer2.nextPackets():
+            print("response:"+ response_line.response)
 
 
 
