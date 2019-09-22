@@ -410,6 +410,7 @@ class EchoServerClientProtocol(asyncio.Protocol):
         self.loop.create_task(self.agent())
 
     def data_received(self, data):
+        print("youmeiyoua  worinima ")
         self.deserializer.update(data)
         for serverPacket in self.deserializer.nextPackets():
             if serverPacket.command_line != "":
