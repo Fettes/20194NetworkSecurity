@@ -57,7 +57,7 @@ class EchoClientProtocol(asyncio.Protocol):
                         self.transport.write(command.__serialize__())
                         print(self.command_list[self.flag])
                         self.flag = self.flag + 1
-                time.sleep(1)
+                time.sleep(2)
 
         # for response_line in self.deserializer.nextPackets():
         #     res_temp = response_line.response.split("<EOL>\n")
