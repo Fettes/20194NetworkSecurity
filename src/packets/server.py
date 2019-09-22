@@ -10,6 +10,9 @@ from autograder_ex6_packets import AutogradeTestStatus
 from escape_room_packets import GameCommandPacket
 from escape_room_packets import GameResponsePacket
 
+import escape_room_packets
+
+
 def create_container_contents(*escape_room_objects):
     return {obj.name: obj for obj in escape_room_objects}
 
@@ -408,17 +411,18 @@ class EchoServerClientProtocol(asyncio.Protocol):
         self.game.start()
         self.loop.create_task(self.agent())
 
-    def data_received(self, data):
-        self.deserializer.update(data)
-        for serverPacket in self.deserializer.nextPackets():
-            print(serverPacket.command_line)
-            output = self.game.command(serverPacket.command_line)
+    def data_received(self, data_bytes):
+        d = PacketType.Deserializer()
+        d.update(data_bytes)
+        data = list(d.nextPackets())
+        print(data[0].comm)
+        output = self.game.command(data[0].comm)
 
-    def send_message(self, result):
-        print(result)
-        game_packet = GameResponsePacket()
-        res_temp = game_packet.create_game_response_packet(result, self.game.status)
-        self.transport.write(res_temp.__serialize__())
+    def output(self, str):
+        print(str)
+        time.sleep(0.5)
+        GameResponse = escape_room_packets.GameResponsePacket.create_game_response_packet(str, self.game.status)
+        self.transport.write(GameResponse.__serialize__())
 
     async def agent(self):
         await asyncio.wait([asyncio.ensure_future(a) for a in self.game.agents])
