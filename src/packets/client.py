@@ -29,8 +29,6 @@ class EchoClientProtocol(asyncio.Protocol):
         with open("escape_room_packets.py", "rb") as f:
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
-        # self.command_packet = GameCommandPacket.create_game_command_packet("SUBMIT")
-        # self.transport.write(self.command_packet.__serialize__())
 
     def data_received(self, data):
         self.deserializer.update(data)
@@ -45,9 +43,7 @@ class EchoClientProtocol(asyncio.Protocol):
                 if self.flag <= len(self.command_list) - 1:
                     if res_temp.split()[-1] == "wall" or res_temp.split()[-1] == "floor" or res_temp.split()[-1] == "ceiling":
                         continue
-
                     if res_temp == "You can't hit that!":
-                        print("x")
                         self.flag = self.flag - 1
                         game_packet = GameCommandPacket()
                         command = game_packet.create_game_command_packet(self.command_list[self.flag])
@@ -60,24 +56,8 @@ class EchoClientProtocol(asyncio.Protocol):
                         self.transport.write(command.__serialize__())
                         print(self.command_list[self.flag])
                         self.flag = self.flag + 1
-                time.sleep(2)
+                time.sleep(1)
 
-        # for response_line in self.deserializer.nextPackets():
-        #     res_temp = response_line.response.split("<EOL>\n")
-        #     print("response:" + res_temp[0])
-        #     if self.flag <= len(self.command_list) - 1:
-        #         if res_temp[0] == "You can't hit that!":
-        #             self.flag = self.flag - 1
-        #             command_packet = GameCommandPacket()
-        #             command = command_packet.create_game_command_packet(self.command_list[self.flag] + "<EOL>\n")
-        #             self.transport.write(command.__serialize__())
-        #             self.flag = self.flag + 1
-        #         else:
-        #             command_packet = GameCommandPacket()
-        #             command = command_packet.create_game_command_packet(self.command_list[self.flag] + "<EOL>\n")
-        #             self.transport.write(command.__serialize__())
-        #             self.flag = self.flag + 1
-        #     time.sleep(0.5)
 
     def connection_lost(self, exc):
         print('The server closed the connection')
