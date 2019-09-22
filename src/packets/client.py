@@ -38,7 +38,8 @@ class EchoClientProtocol(asyncio.Protocol):
             print("response:"+ res_temp[0])
 
             command_packet = GameCommandPacket()
-            command = command_packet.create_game_command_packet("look mirror")
+            command = command_packet.create_game_command_packet("look mirror<EOL>\n")
+
             self.transport.write(command.__serialize__())
 
 
