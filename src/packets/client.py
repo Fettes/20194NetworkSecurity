@@ -19,6 +19,7 @@ class EchoClientProtocol(asyncio.Protocol):
                              "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key",
                              "open door"]
         self.flag = 0
+        EnablePresetLogging(PRESET_VERBOSE)
 
     def connection_made(self, transport):
         self.transport = transport
@@ -50,7 +51,6 @@ class EchoClientProtocol(asyncio.Protocol):
                     self.flag = self.flag + 1
             time.sleep(0.5)
 
-        EnablePresetLogging(PRESET_VERBOSE)
 
         self.deserializer1.update(data)
         for echoPacket in self.deserializer1.nextPackets():
