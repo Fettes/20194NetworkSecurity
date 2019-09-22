@@ -6,7 +6,7 @@ from autograder_ex6_packets import AutogradeStartTest
 from autograder_ex6_packets import AutogradeTestStatus
 from escape_room_packets import GameCommandPacket
 from escape_room_packets import GameResponsePacket
-
+from playground.common.logging import EnablePresetLogging, PRESET_VERBOSE
 
 
 class EchoClientProtocol(asyncio.Protocol):
@@ -15,13 +15,13 @@ class EchoClientProtocol(asyncio.Protocol):
         self.loop = loop
         self.deserializer1 = AutogradeTestStatus.Deserializer()
         self.deserializer2 = GameResponsePacket.Deserializer()
-        self.command_list = ["look mirror", "get hairpin","unlock chest with hairpin", "open chest",
-                             "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key", "open door"]
+        self.command_list = ["look mirror", "get hairpin", "unlock chest with hairpin", "open chest",
+                             "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key",
+                             "open door"]
         self.flag = 0
 
     def connection_made(self, transport):
         self.transport = transport
-        self.transport.write("<EOL>\n".encode())
         packetClient = AutogradeStartTest()
         packetClient.name = "Tianshi Feng"
         packetClient.team = 4
@@ -31,12 +31,11 @@ class EchoClientProtocol(asyncio.Protocol):
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
 
-
     def data_received(self, data):
         self.deserializer2.update(data)
         for response_line in self.deserializer2.nextPackets():
             res_temp = response_line.response.split("<EOL>\n")
-            print("response:"+ res_temp[0])
+            print("response:" + res_temp[0])
             if self.flag <= len(self.command_list) - 1:
                 if res_temp[0] == "You can't hit that!":
                     self.flag = self.flag - 1
@@ -50,6 +49,8 @@ class EchoClientProtocol(asyncio.Protocol):
                     self.transport.write(command.__serialize__())
                     self.flag = self.flag + 1
             time.sleep(0.5)
+
+        EnablePresetLogging(PRESET_VERBOSE)
 
         self.deserializer1.update(data)
         for echoPacket in self.deserializer1.nextPackets():
@@ -84,7 +85,7 @@ class EchoClientProtocol(asyncio.Protocol):
 loop = asyncio.get_event_loop()
 
 coro = playground.create_connection(lambda: EchoClientProtocol(loop), '20194.0.0.19000', 19006)
-#coro = loop.create_connection(lambda: EchoClientProtocol(loop), 'localhost', 1024)
+# coro = loop.create_connection(lambda: EchoClientProtocol(loop), 'localhost', 1024)
 loop.run_until_complete(coro)
 loop.run_forever()
 loop.close()
