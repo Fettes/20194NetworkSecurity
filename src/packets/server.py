@@ -412,15 +412,10 @@ class EchoServerClientProtocol(asyncio.Protocol):
     def data_received(self, data):
         self.deserializer.update(data)
         for serverPacket in self.deserializer.nextPackets():
-            if isinstance(serverPacket, AutogradeTestStatus):
-                print(serverPacket.server_status)
-                print("server:" + serverPacket.error)
-
-            if isinstance(serverPacket, GameCommandPacket):
-                print("command:" + serverPacket.command_line+"*")
-                if serverPacket.command_line != "":
-                    print("*")
-                    output = self.game.command(serverPacket.command_line)
+            print("command:" + serverPacket.command_line+"*")
+            if serverPacket.command_line != "":
+                print("*")
+                output = self.game.command(serverPacket.command_line)
 
     def send_message(self, result):
         print(result)
