@@ -420,7 +420,8 @@ class EchoServerClientProtocol(asyncio.Protocol):
         print("result" + result)
         game_packet = GameResponsePacket()
         response = game_packet.create_game_response_packet(result, self.game.status)
-        self.transport.write(response.__serialize__())
+        # self.transport.write(response.__serialize__())
+        # print("rrrrr")
 
     async def agent(self):
         await asyncio.wait([asyncio.ensure_future(a) for a in self.game.agents])

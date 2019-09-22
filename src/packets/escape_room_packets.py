@@ -23,19 +23,19 @@ class GameResponsePacket(PacketType):
     DEFINITION_VERSION = "1.0"
 
     FIELDS = [
-        ("response", STRING),
-        ("status", STRING),
+        ("res", STRING),
+        ("sta", STRING),
     ]
 
     @classmethod
     def create_game_response_packet(cls, response, status):
-        return cls(response=response, status=status)
+        return cls(res=response, sta=status)
 
     def game_over(self):
-        return self.status() != "playing"
+        return self.sta() != "playing"
 
     def status(self):
-        return self.status
+        return self.sta
 
     def response(self):
-        return self.response
+        return self.res
