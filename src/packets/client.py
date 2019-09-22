@@ -26,7 +26,7 @@ class EchoClientProtocol(asyncio.Protocol):
         packetClient.team = 4
         packetClient.email = "tfeng7@jhu.edu"
         packetClient.port = 1024
-        with open("escape_room_packets.py", "rb") as f:
+        with open("escape_room_packets.py", "r") as f:
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
         self.transport.write("<EOL>\n".encode())
