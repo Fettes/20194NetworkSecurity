@@ -29,7 +29,6 @@ class GameResponsePacket(PacketType):
 
     @classmethod
     def create_game_response_packet(cls, response, status):
-        print("rinima")
         return cls(res=response, sta=status)
 
     def game_over(self):
