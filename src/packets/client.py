@@ -32,11 +32,10 @@ class EchoClientProtocol(asyncio.Protocol):
 
     def data_received(self, data):
         self.deserializer.update(data)
-        self.transport.write("<EOL>\n")
         for clientPacket in self.deserializer.nextPackets():
             if isinstance(clientPacket, AutogradeTestStatus):
                 print(clientPacket.client_status)
-                self.transport.write("<EOL>\n")
+                self.transport.write("<EOL>\n".encode())
             if isinstance(clientPacket, GameResponsePacket):
                 res_temp = clientPacket.response.split("<EOL>\n")
                 print(res_temp)
