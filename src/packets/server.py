@@ -422,7 +422,7 @@ class EchoServerClientProtocol(asyncio.Protocol):
                 output = self.game.command(serverPacket.command_line)
 
     def send_message(self, result):
-        print(result)
+        print("result:"+ result)
         game_packet = GameResponsePacket()
         response = game_packet.create_game_response_packet(result, self.game.status)
         self.transport.write(response.__serialize__())
