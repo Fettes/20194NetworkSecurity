@@ -32,8 +32,8 @@ class EchoClientProtocol(asyncio.Protocol):
         self.transport.write("<EOL>\n".encode())
 
     def data_received(self, data):
-        self.deserializer1.update(data)
-        print(data)
+        self.deserializer2.update(data)
+        print(self.deserializer2.update(data))
         for echoPacket in self.deserializer1.nextPackets():
             print(echoPacket.client_status)
         response = GameResponsePacket.response()
