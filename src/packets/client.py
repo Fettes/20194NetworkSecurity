@@ -39,6 +39,7 @@ class EchoClientProtocol(asyncio.Protocol):
 
         command_packet = GameCommandPacket()
         command_sending = command_packet.create_game_command_packet(self.command_list[self.flag])
+        print(self.command_list[self.flag])
         print(command_sending)
         self.transport.write(command_packet.__serialize__())
 
