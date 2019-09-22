@@ -32,7 +32,7 @@ class EchoClientProtocol(asyncio.Protocol):
         self.transport.write("<EOL>\n".encode())
 
     def data_received(self, data):
-        print(data)
+        self.deserializer1.update(data)
         self.deserializer2.update(data)
         print(self.deserializer2.update(data))
         for echoPacket in self.deserializer1.nextPackets():
