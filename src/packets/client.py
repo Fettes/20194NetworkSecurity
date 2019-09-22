@@ -39,8 +39,8 @@ class EchoClientProtocol(asyncio.Protocol):
                 print(clientPacket.error)
 
             if isinstance(clientPacket, GameResponsePacket):
-                res_temp = clientPacket.response
-                print(clientPacket.response)
+                res_temp = clientPacket.res
+                print(clientPacket.res)
                 if self.flag <= len(self.command_list) - 1:
                     if res_temp.split()[-1] == "wall" or res_temp.split()[-1] == "floor" or res_temp.split()[-1] == "ceiling":
                         continue
