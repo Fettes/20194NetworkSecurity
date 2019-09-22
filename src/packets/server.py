@@ -417,12 +417,12 @@ class EchoServerClientProtocol(asyncio.Protocol):
                 print("server:" + serverPacket.error)
 
             if isinstance(serverPacket, GameCommandPacket):
-                print("xxxx")
-                print(serverPacket.command_line)
-                output = self.game.command(serverPacket.command_line)
+                print("command:" + serverPacket.command_line)
+                if serverPacket.command_line != "":
+                    output = self.game.command(serverPacket.command_line)
 
     def send_message(self, result):
-        print("result:"+ result)
+        print(result)
         game_packet = GameResponsePacket()
         response = game_packet.create_game_response_packet(result, self.game.status)
         self.transport.write(response.__serialize__())
