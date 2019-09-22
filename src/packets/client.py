@@ -2,6 +2,7 @@ import asyncio
 import time
 import playground
 
+from playground.network.packet import PacketType
 from autograder_ex6_packets import AutogradeStartTest
 from autograder_ex6_packets import AutogradeTestStatus
 from escape_room_packets import GameCommandPacket
@@ -12,7 +13,7 @@ class EchoClientProtocol(asyncio.Protocol):
     def __init__(self, loop):
         self.flag = 0
         self.loop = loop
-        self.deserializer = AutogradeTestStatus.Deserializer()
+        self.deserializer = PacketType.Deserializer()
         self.command_list = ["look mirror", "get hairpin", "unlock chest with hairpin", "open chest",
                              "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key",
                              "open door"]
