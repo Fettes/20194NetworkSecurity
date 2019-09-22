@@ -39,7 +39,7 @@ class EchoClientProtocol(asyncio.Protocol):
                 res_temp = clientPacket.response.split("<EOL>\n")
                 print(res_temp)
                 command_packet = GameCommandPacket()
-                command_packet.command = ""
+                command_packet.command = "look"
                 self.transport.write(command_packet.__serialize__())
 
                 if self.flag <= len(self.command_list) - 1:
