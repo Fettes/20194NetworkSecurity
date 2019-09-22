@@ -443,7 +443,7 @@ def flush_output(*args, **kargs):
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     # Each client connection will create a new protocol instance
-    coro = playground.create_server(EchoServerClientProtocol, 'localhost', 1028)
+    coro = playground.create_server(EchoServerClientProtocol, 'localhost', 1027)
     server = loop.run_until_complete(coro)
     loop.set_debug(enabled=True)
     from playground.common.logging import EnablePresetLogging, PRESET_DEBUG
