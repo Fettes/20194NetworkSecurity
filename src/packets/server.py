@@ -412,11 +412,10 @@ class EchoServerClientProtocol(asyncio.Protocol):
         self.loop.create_task(self.agent())
 
     def data_received(self, data_bytes):
-        d = PacketType.Deserializer()
-        d.update(data_bytes)
-        data = list(d.nextPackets())
-        print(data[0].comm)
-        output = self.game.command(data[0].comm)
+        self.deserializer.update(data_bytes)
+        data = list(self.deserializer.nextPackets())
+        print(data[0].command)
+        output = self.game.command(data[0].command)
 
     def output(self, str):
         print(str)
