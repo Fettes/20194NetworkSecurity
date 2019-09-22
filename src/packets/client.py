@@ -29,6 +29,8 @@ class EchoClientProtocol(asyncio.Protocol):
         with open("escape_room_packets.py", "rb") as f:
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
+        self.command_packet = GameCommandPacket.GameCommandPacket.create_game_command_packet("SUBMIT")
+        self.transport.write(self.command_packet.__serialize__())
 
     def data_received(self, data):
         self.deserializer.update(data)
@@ -36,20 +38,18 @@ class EchoClientProtocol(asyncio.Protocol):
             if isinstance(clientPacket, AutogradeTestStatus):
                 print(clientPacket.client_status)
                 print(clientPacket.error)
-                # self.transport.write("".encode())
+
             if isinstance(clientPacket, GameResponsePacket):
                 res_temp = clientPacket.response
                 print(clientPacket.response)
                 if self.flag <= len(self.command_list) - 1:
                     if res_temp == "You can't hit that!":
                         self.flag = self.flag - 1
-                        command_packet = GameCommandPacket()
-                        command = command_packet.create_game_command_packet(self.command_list[self.flag] + "<EOL>\n")
+                        command = GameCommandPacket.create_game_command_packet(self.command_list[self.flag] + "<EOL>\n")
                         self.transport.write(command.__serialize__())
                         self.flag = self.flag + 1
                     else:
-                        command_packet = GameCommandPacket()
-                        command = command_packet.create_game_command_packet(self.command_list[self.flag] + "<EOL>\n")
+                        command = GameCommandPacket.create_game_command_packet(self.command_list[self.flag] + "<EOL>\n")
                         self.transport.write(command.__serialize__())
                         self.flag = self.flag + 1
                 time.sleep(0.5)
