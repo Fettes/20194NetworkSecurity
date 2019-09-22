@@ -417,8 +417,9 @@ class EchoServerClientProtocol(asyncio.Protocol):
                 print("server:" + serverPacket.error)
 
             if isinstance(serverPacket, GameCommandPacket):
-                print("command:" + serverPacket.command_line)
+                print("command:" + serverPacket.command_line+"*")
                 if serverPacket.command_line != "":
+                    print("*")
                     output = self.game.command(serverPacket.command_line)
 
     def send_message(self, result):
