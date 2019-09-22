@@ -35,9 +35,7 @@ class EchoClientProtocol(asyncio.Protocol):
         for clientPacket in self.deserializer.nextPackets():
             if isinstance(clientPacket, AutogradeTestStatus):
                 print(clientPacket.client_status)
-                command_packet = GameCommandPacket()
-                command_packet.command = ""
-                self.transport.write(command_packet.__serialize__())
+                self.transport.write("".encode())
             if isinstance(clientPacket, GameResponsePacket):
                 res_temp = clientPacket.response.split("<EOL>\n")
                 print(res_temp)
@@ -80,8 +78,8 @@ class EchoClientProtocol(asyncio.Protocol):
 
 loop = asyncio.get_event_loop()
 loop.set_debug(enabled=True)
-# from playground.common.logging import EnablePresetLogging, PRESET_DEBUG
-# EnablePresetLogging(PRESET_DEBUG)
+from playground.common.logging import EnablePresetLogging, PRESET_DEBUG
+EnablePresetLogging(PRESET_DEBUG)
 coro = playground.create_connection(lambda: EchoClientProtocol(loop), '20194.0.0.19000', 19006)
 # coro = loop.create_connection(lambda: EchoClientProtocol(loop), 'localhost', 1024)
 loop.run_until_complete(coro)
