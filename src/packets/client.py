@@ -35,7 +35,7 @@ class EchoClientProtocol(asyncio.Protocol):
         for clientPacket in self.deserializer.nextPackets():
             if isinstance(clientPacket, AutogradeTestStatus):
                 print("client status:" + clientPacket.client_status)
-                print("server status:" + clientPacket.server_status)
+                # print("server status:" + clientPacket.server_status)
                 print("error:" + clientPacket.error)
 
             if isinstance(clientPacket, GameResponsePacket):
