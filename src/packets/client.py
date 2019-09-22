@@ -70,30 +70,6 @@ class EchoClientProtocol(asyncio.Protocol):
         #             self.flag = self.flag + 1
         #     time.sleep(0.5)
 
-
-        for echoPacket in self.deserializer.nextPackets():
-            print(echoPacket.client_status)
-
-        # print(data.decode())
-        # respond = data.decode().split("<EOL>\n")
-        #
-        # # Define the command list
-        # command_list = ["SUBMIT,Tianshi Feng,tfeng7@jhu.edu,team 4,1024", "look mirror", "get hairpin","unlock chest with hairpin",
-        #                 "open chest", "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key",
-        #                 "open door"]
-        #
-        # if self.flag <= len(command_list) - 1:
-        #     if respond[0] == "You can't hit that!":
-        #         self.flag = self.flag - 1
-        #         command = self.send_message(command_list[self.flag])
-        #         self.transport.write(command.encode())
-        #         self.flag = self.flag + 1
-        #     else:
-        #         command = self.send_message(command_list[self.flag])
-        #         self.transport.write(command.encode())
-        #         self.flag = self.flag + 1
-        # time.sleep(1)
-
     def connection_lost(self, exc):
         print('The server closed the connection')
         print('Stop the event loop')
