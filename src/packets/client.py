@@ -45,11 +45,13 @@ class EchoClientProtocol(asyncio.Protocol):
                 if self.flag <= len(self.command_list) - 1:
                     if res_temp == "You can't hit that!":
                         self.flag = self.flag - 1
-                        command = GameCommandPacket.create_game_command_packet(self.command_list[self.flag])
+                        game_packet = GameCommandPacket()
+                        command = game_packet.create_game_command_packet(self.command_list[self.flag])
                         self.transport.write(command.__serialize__())
                         self.flag = self.flag + 1
                     else:
-                        command = GameCommandPacket.create_game_command_packet(self.command_list[self.flag])
+                        game_packet = GameCommandPacket()
+                        command = game_packet.create_game_command_packet(self.command_list[self.flag])
                         self.transport.write(command.__serialize__())
                         self.flag = self.flag + 1
                 time.sleep(0.5)
