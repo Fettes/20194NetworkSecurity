@@ -10,6 +10,12 @@ from autograder_ex6_packets import AutogradeTestStatus
 from escape_room_packets import GameCommandPacket
 from escape_room_packets import GameResponsePacket
 
+"""
+Escape Room Core
+"""
+import random, sys, asyncio
+
+
 def create_container_contents(*escape_room_objects):
     return {obj.name: obj for obj in escape_room_objects}
 
@@ -106,8 +112,8 @@ class EscapeRoomCommandHandler:
 
     def _cmd_open(self, open_args):
         """
-    Let's demonstrate using some ands instead of ifs"
-    """
+        Let's demonstrate using some ands instead of ifs"
+        """
         if len(open_args) == 0:
             return self.output("Open what?")
         object = self.room["container"].get(open_args[-1], None)
@@ -137,7 +143,6 @@ class EscapeRoomCommandHandler:
             object = container["container"] and container["container"].get(get_args[0], None) or None
 
             success_result = "You got it"
-            print(object)
             get_result = (
                     ((not container or container["container"] == False) and "You can't get something out of that!") or
                     ((container["openable"] and not container["open"]) and "It's not open.") or
@@ -177,8 +182,8 @@ class EscapeRoomCommandHandler:
 
     def _cmd_inventory(self, inventory_args):
         """
-    Use return statements to end function early
-    """
+        Use return statements to end function early
+        """
         if len(inventory_args) != 0:
             self.output("What?!")
             return
@@ -335,45 +340,32 @@ class EscapeRoomGame:
         room.triggers.append(lambda obj, cmd, *args: (cmd == "_post_command_") and advance_time(room, clock))
         flyingkey.triggers.append((lambda obj, cmd, *args: (cmd == "hit" and args[0] in obj[
             "smashers"]) and flyingkey_hit_trigger(room, flyingkey, key, self.output)))
-
-        # TODO, the chest needs some triggers. Please make the chest
-        # update it's description when it's unlocked and when it's opened.
-        # hint: the function create_chest_description already has the right
-        # text, but it needs to be called at the right time.
+        # TODO, the chest needs some triggers. This is for a later exercise
 
         self.room, self.player = room, player
         self.command_handler = self.command_handler_class(room, player, self.output)
         self.agents.append(self.flyingkey_agent(flyingkey))
         self.status = "created"
 
-    def move_flyingkey(self, flyingkey):
-        locations = ["ceiling", "floor", "wall"]
-        locations.remove(flyingkey["location"])
-        random.shuffle(locations)
-        next_location = locations.pop(0)
-        old_location = flyingkey["location"]
-        flyingkey["location"] = next_location
-        flyingkey["description"] = create_flyingkey_description(flyingkey)
-        flyingkey["short_description"] = create_flyingkey_short_description(flyingkey)
-        flyingkey["hittable"] = next_location == "wall"
-        self.output("The {} flies from the {} to the {}".format(flyingkey.name, old_location, next_location))
-        for event in self.room.do_trigger("_post_command_"):
-            self.output(event)
-
     async def flyingkey_agent(self, flyingkey):
-        # this is the part you, the student, fills in.
-        # you will probably need to use:
-        #  - asyncio.sleep (I recommend 5 seconds)
-        #  - self.status, you'll need to stop when no longer playing
-        #  - check if the flyingkey is still flying
-        #  - of course, "move_flyingkey"
-        while self.status == "playing" and flyingkey["flying"] == True:
-            self.move_flyingkey(flyingkey)
+        random.seed(0)  # this should make everyone's random behave the same.
+        await asyncio.sleep(5)  # sleep before starting the while loop
+        while self.status == "playing" and flyingkey["flying"]:
+            locations = ["ceiling", "floor", "wall"]
+            locations.remove(flyingkey["location"])
+            random.shuffle(locations)
+            next_location = locations.pop(0)
+            old_location = flyingkey["location"]
+            flyingkey["location"] = next_location
+            flyingkey["description"] = create_flyingkey_description(flyingkey)
+            flyingkey["short_description"] = create_flyingkey_short_description(flyingkey)
+            flyingkey["hittable"] = next_location == "wall"
+            self.output("The {} flies from the {} to the {}".format(flyingkey.name, old_location, next_location))
+            for event in self.room.do_trigger("_post_command_"):
+                self.output(event)
             await asyncio.sleep(5)
-        pass
 
     def start(self):
-        random.seed(0)  # this should make everyone's random behave the same.
         self.status = "playing"
         self.output("Where are you? You don't know how you got here... Were you kidnapped? Better take a look around")
 
@@ -392,8 +384,8 @@ class EscapeRoomGame:
                 self.output("You died. Game over!")
                 self.status = "dead"
             elif self.player.name not in self.room["container"]:
-                self.output("VICTORY! You escaped!")
                 self.status = "escaped"
+                self.output("VICTORY! You escaped!")
 
 
 class EchoServerClientProtocol(asyncio.Protocol):
@@ -424,21 +416,6 @@ class EchoServerClientProtocol(asyncio.Protocol):
 
     async def agent(self):
         await asyncio.wait([asyncio.ensure_future(a) for a in self.game.agents])
-
-
-
-def game_next_input(game):
-    input = sys.stdin.readline().strip()
-    game.command(input)
-    if game.status != 'playing':
-        asyncio.get_event_loop().stop()
-    else:
-        flush_output(">> ", end='')
-
-
-def flush_output(*args, **kargs):
-    print(*args, **kargs)
-    sys.stdout.flush()
 
 
 if __name__ == "__main__":
