@@ -36,7 +36,7 @@ class EchoClientProtocol(asyncio.Protocol):
             if isinstance(clientPacket, AutogradeTestStatus):
                 print("client status:" + clientPacket.client_status)
                 print("server status:" + clientPacket.server_status)
-                print("error:"+ clientPacket.error)
+                print("error:" + clientPacket.error)
 
             if isinstance(clientPacket, GameResponsePacket):
                 res_temp = clientPacket.response
@@ -58,7 +58,6 @@ class EchoClientProtocol(asyncio.Protocol):
                         print(self.command_list[self.flag])
                         self.flag = self.flag + 1
                 time.sleep(1)
-
 
     def connection_lost(self, exc):
         print('The server closed the connection')
