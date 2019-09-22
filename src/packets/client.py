@@ -38,7 +38,7 @@ class EchoClientProtocol(asyncio.Protocol):
         for echoPacket in self.deserializer1.nextPackets():
             print(echoPacket.client_status)
         for echoPacket in self.deserializer2.nextPackets():
-            print(echoPacket.response)
+            print("response:"+ echoPacket.response)
 
 
 
