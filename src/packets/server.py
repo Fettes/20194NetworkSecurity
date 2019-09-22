@@ -414,12 +414,11 @@ class EchoServerClientProtocol(asyncio.Protocol):
         for serverPacket in self.deserializer.nextPackets():
             if isinstance(serverPacket, AutogradeTestStatus):
                 print(serverPacket.server_status)
-                print(serverPacket.error)
+                print("server:" + serverPacket.error)
 
             if isinstance(serverPacket, GameCommandPacket):
                 print(serverPacket.command_line)
-                if serverPacket.command_line != "":
-                    output = self.game.command(serverPacket.command_line)
+                output = self.game.command(serverPacket.command_line)
 
     def send_message(self, result):
         print(result)
