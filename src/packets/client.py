@@ -38,8 +38,8 @@ class EchoClientProtocol(asyncio.Protocol):
             print("response:"+ res_temp[0])
             command_packet = GameCommandPacket()
             command_packet.command = self.command_list[self.flag]
-            self.transport.write(command_packet.__serialize__())
             print(command_packet.command)
+            self.transport.write(command_packet.__serialize__())
 
 
         command_sending = command_packet.create_game_command_packet(self.command_list[self.flag])
