@@ -42,7 +42,7 @@ class EchoClientProtocol(asyncio.Protocol):
             if isinstance(clientPacket, GameResponsePacket):
                 res_temp = clientPacket.response
                 print(clientPacket.response)
-                if self.flag <= len(self.command_list) - 1:
+                if self.flag <= len(self.command_list):
                     if res_temp == "You can't hit that!":
                         self.flag = self.flag - 1
                         game_packet = GameCommandPacket()
@@ -54,7 +54,7 @@ class EchoClientProtocol(asyncio.Protocol):
                         command = game_packet.create_game_command_packet(self.command_list[self.flag])
                         self.transport.write(command.__serialize__())
                         self.flag = self.flag + 1
-                time.sleep(0.5)
+                time.sleep(1)
 
         # for response_line in self.deserializer.nextPackets():
         #     res_temp = response_line.response.split("<EOL>\n")
