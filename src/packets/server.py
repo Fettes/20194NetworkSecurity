@@ -444,7 +444,7 @@ def flush_output(*args, **kargs):
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     # Each client connection will create a new protocol instance
-    coro = playground.create_server(EchoServerClientProtocol, 'localhost', 1028)
+    coro = playground.create_server(EchoServerClientProtocol, 'localhost', 1026)
     server = loop.run_until_complete(coro)
 
     # Serve requests until Ctrl+C is pressed
