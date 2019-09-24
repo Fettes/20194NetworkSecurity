@@ -24,14 +24,14 @@ class GameResponsePacket(PacketType):
     DEFINITION_VERSION = "1.0"
 
     FIELDS = [
-        ("command", STRING),
+        ("response", STRING),
         ("game_status", STRING),
         # whatever you want here
     ]
 
     @classmethod
     def create_game_response_packet(cls, response, status):
-        return cls(command=response, game_status=status)
+        return cls(response=response, game_status=status)
 
     def game_over(self):
         return self.game_status != "playing"

@@ -33,8 +33,8 @@ class EchoClient(asyncio.Protocol):
                 print(item_packet.error)
 
             if isinstance(item_packet, GameResponsePacket):
-                data1 = item_packet.command
-                print(item_packet.command)
+                data1 = item_packet.response
+                print(item_packet.response)
                 print(item_packet.game_status)
 
                 message = [
