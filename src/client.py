@@ -33,8 +33,8 @@ class EchoClient(asyncio.Protocol):
                 print(item_packet.error)
 
             if isinstance(item_packet, GameResponsePacket):
-                data1 = item_packet.response
-                print(item_packet.response)
+                data1 = item_packet.res
+                print(item_packet.res)
 
                 message = [
                     "look mirror",
