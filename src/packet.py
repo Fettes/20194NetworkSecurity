@@ -7,15 +7,15 @@ class GameCommandPacket(PacketType):
     DEFINITION_VERSION = "1.0"
 
     FIELDS = [
-        ("command", STRING),
+        ("comm", STRING),
     ]
 
     @classmethod
     def create_game_command_packet(cls, s):
-        return cls(command=s)
+        return cls(comm=s)
 
     def command(self):
-        return self.command
+        return self.comm
 
 
 class GameResponsePacket(PacketType):
