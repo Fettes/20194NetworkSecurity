@@ -47,7 +47,8 @@ class EchoClient(asyncio.Protocol):
                     "get key",
                     "unlock door with key",
                     "open door"]
-
+                if data1.split()[-1] == "wall" or data1.split()[-1] == "floor" or data1.split()[-1] == "ceiling":
+                    continue
                 if self.index <= 9:
                     if data1 == "You can't hit that!":
                         self.index -= 1
