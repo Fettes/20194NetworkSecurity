@@ -11,7 +11,6 @@ class EchoClient(asyncio.Protocol):
     def __init__(self):
         self.index = 0
         self.deserializer = PacketType.Deserializer()
-        pass
 
     def connection_made(self, transport):
         self.transport = transport
@@ -39,16 +38,16 @@ class EchoClient(asyncio.Protocol):
                 print(item_packet.game_status)
 
                 message = [
-                    "look mirror<EOL>\n",
-                    "get hairpin<EOL>\n",
-                    "unlock chest with hairpin<EOL>\n",
+                    "look mirror",
+                    "get hairpin",
+                    "unlock chest with hairpin",
                     "open chest",
-                    "look in the chest<EOL>\n",
-                    "get hammer from chest<EOL>\n",
-                    "hit flyingkey with hammer<EOL>\n",
-                    "get key<EOL>\n",
-                    "unlock door with key<EOL>\n",
-                    "open door<EOL>\n"]
+                    "look in the chest",
+                    "get hammer from chest",
+                    "hit flyingkey with hammer",
+                    "get key",
+                    "unlock door with key",
+                    "open door"]
 
                 if self.index <= 9:
                     if data1 == "You can't hit that!":
