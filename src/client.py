@@ -62,7 +62,7 @@ class EchoClient(asyncio.Protocol):
         packet2 = GameCommandPacket()
         package = packet2.create_game_command_packet(message)
         self.transport.write(package.__serialize__())
-        print("66666")
+        print(message)
 
 
 if __name__ == "__main__":
