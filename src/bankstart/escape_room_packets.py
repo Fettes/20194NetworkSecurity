@@ -1,5 +1,5 @@
 from playground.network.packet import PacketType
-from playground.network.packet.fieldtypes import STRING, UNIT32, BUFFER
+from playground.network.packet.fieldtypes import STRING, UNIT16, BUFFER
 
 
 class GameCommandPacket(PacketType):
@@ -57,7 +57,7 @@ class GamePaymentRequestPacket(PacketType):
     FIELDS = [
         ("unique_id", STRING),
         ("account", STRING),
-        ("amount", UNIT32)
+        ("amount", UNIT16)
     ]
 
 
