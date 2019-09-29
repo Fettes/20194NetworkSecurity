@@ -41,16 +41,19 @@ class GameResponsePacket(PacketType):
         return self.res
 
 
-# def create_game_init_packet(username):
-#
-#     class game_init_packet(PacketType):
-#         DEFINITION_IDENTIFIER = "20194.exercise6.game_init_packet"
-#         DEFINITION_VERSION = "1.0"
-#
-#         FIELDS = [
-#             ("usrname", STRING),
-#         ]
-#     tmp = game_init_packet()
-#     tmp.usrname = username
-#     return game_init_packet
+def create_game_init_packet(username):
+
+    class game_init_packet(PacketType):
+        DEFINITION_IDENTIFIER = "20194.exercise6.game_init_packet"
+        DEFINITION_VERSION = "1.0"
+
+        FIELDS = [
+            ("usrname", STRING),
+        ]
+    tmp = game_init_packet()
+    tmp.usrname = username
+    return game_init_packet
+
+def process_game_init(pkt):
+    return "tianshi"
 
