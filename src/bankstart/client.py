@@ -5,8 +5,8 @@ import playground
 from playground.network.packet import PacketType
 from autograder_ex6_packets import AutogradeStartTest
 from autograder_ex6_packets import AutogradeTestStatus
-from escape_room_packets import *
-
+from escape_room_packets import GameCommandPacket
+from escape_room_packets import GameResponsePacket
 
 
 class EchoClientProtocol(asyncio.Protocol):
@@ -30,10 +30,7 @@ class EchoClientProtocol(asyncio.Protocol):
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
 
-
-
     def data_received(self, data):
-        print(data)
         self.deserializer.update(data)
         for clientPacket in self.deserializer.nextPackets():
             if isinstance(clientPacket, AutogradeTestStatus):
@@ -70,8 +67,8 @@ class EchoClientProtocol(asyncio.Protocol):
 
 loop = asyncio.get_event_loop()
 loop.set_debug(enabled=True)
-from playground.common.logging import EnablePresetLogging, PRESET_DEBUG
-EnablePresetLogging(PRESET_DEBUG)
+# from playground.common.logging import EnablePresetLogging, PRESET_DEBUG
+# EnablePresetLogging(PRESET_DEBUG)
 coro = playground.create_connection(lambda: EchoClientProtocol(loop), '20194.0.0.19000', 19007)
 # coro = loop.create_connection(lambda: EchoClientProtocol(loop), 'localhost', 1024)
 loop.run_until_complete(coro)
