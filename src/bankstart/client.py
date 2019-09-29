@@ -30,8 +30,6 @@ class EchoClientProtocol(asyncio.Protocol):
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
 
-        # ini_game = create_game_init_packet("Fettes")
-        # self.transport.write(ini_game.__serialize__())
 
 
     def data_received(self, data):
@@ -42,6 +40,8 @@ class EchoClientProtocol(asyncio.Protocol):
                 print(clientPacket.client_status)
                 print(clientPacket.server_status)
                 print(clientPacket.error)
+                ini_game = create_game_init_packet("Fettes")
+                self.transport.write(ini_game.__serialize__())
 
             if isinstance(clientPacket, GameResponsePacket):
                 res_temp = clientPacket.res
