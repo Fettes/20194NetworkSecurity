@@ -40,8 +40,6 @@ class EchoClientProtocol(asyncio.Protocol):
                 print(clientPacket.client_status)
                 print(clientPacket.server_status)
                 print(clientPacket.error)
-                ini_game = create_game_init_packet("Fettes")
-                self.transport.write(ini_game.__serialize__())
 
             if isinstance(clientPacket, GameResponsePacket):
                 res_temp = clientPacket.res
