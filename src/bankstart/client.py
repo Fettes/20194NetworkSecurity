@@ -48,6 +48,11 @@ class EchoClientProtocol(asyncio.Protocol):
                 print(clientPacket.server_status)
                 print(clientPacket.error)
 
+            if isinstance(clientPacket,GamePaymentRequestPacket):
+                print(clientPacket.unique_id)
+                print(clientPacket.account)
+                print(clientPacket.amount)
+
             if isinstance(clientPacket, GameResponsePacket):
                 res_temp = clientPacket.res
                 print(clientPacket.res)
