@@ -30,8 +30,8 @@ class EchoClientProtocol(asyncio.Protocol):
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
 
-        ini_game = create_game_init_packet("Fettes")
-        self.transport.write(ini_game.__serialize__())
+        # ini_game = create_game_init_packet("Fettes")
+        # self.transport.write(ini_game.__serialize__())
 
 
     def data_received(self, data):
@@ -71,8 +71,8 @@ class EchoClientProtocol(asyncio.Protocol):
 
 loop = asyncio.get_event_loop()
 loop.set_debug(enabled=True)
-# from playground.common.logging import EnablePresetLogging, PRESET_DEBUG
-# EnablePresetLogging(PRESET_DEBUG)
+from playground.common.logging import EnablePresetLogging, PRESET_DEBUG
+EnablePresetLogging(PRESET_DEBUG)
 coro = playground.create_connection(lambda: EchoClientProtocol(loop), '20194.0.0.19000', 19007)
 # coro = loop.create_connection(lambda: EchoClientProtocol(loop), 'localhost', 1024)
 loop.run_until_complete(coro)
