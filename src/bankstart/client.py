@@ -5,8 +5,8 @@ import playground
 from playground.network.packet import PacketType
 from autograder_ex6_packets import AutogradeStartTest
 from autograder_ex6_packets import AutogradeTestStatus
-from escape_room_packets import GameCommandPacket
-from escape_room_packets import GameResponsePacket
+import escape_room_packets
+
 
 
 class EchoClientProtocol(asyncio.Protocol):
@@ -19,6 +19,8 @@ class EchoClientProtocol(asyncio.Protocol):
                              "open door"]
         self.flag = 0
 
+
+
     def connection_made(self, transport):
         self.transport = transport
         packetClient = AutogradeStartTest()
@@ -29,6 +31,9 @@ class EchoClientProtocol(asyncio.Protocol):
         with open("escape_room_packets.py", "rb") as f:
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
+
+        self.command_packet = escape_room_packets.GameCommandPacket.create_game_command_packet("Submit")
+        self.transport.write(self.command_packet.__serialize__())
 
         # ini_game = create_game_init_packet("Fettes")
         # self.transport.write(ini_game.__serialize__())
