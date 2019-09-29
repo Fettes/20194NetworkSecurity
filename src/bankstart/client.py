@@ -30,8 +30,8 @@ class EchoClientProtocol(asyncio.Protocol):
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
 
-        ini_game = create_game_init_packet("Fettes")
-        self.transport.write(ini_game.__serialize__())
+        # ini_game = create_game_init_packet("Fettes")
+        # self.transport.write(ini_game.__serialize__())
 
 
     def data_received(self, data):
