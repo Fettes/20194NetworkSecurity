@@ -42,7 +42,6 @@ class GameResponsePacket(PacketType):
 
 
 def create_game_init_packet(username):
-
     class game_init_packet(PacketType):
         DEFINITION_IDENTIFIER = "20194.exercise6.game_init_packet"
         DEFINITION_VERSION = "1.0"
@@ -50,10 +49,15 @@ def create_game_init_packet(username):
         FIELDS = [
             ("usrname", STRING),
         ]
+
     tmp = game_init_packet()
     tmp.usrname = username
     return game_init_packet
 
+
 def process_game_init(pkt):
+    print(pkt)
     return "tianshi"
 
+
+# def create_game_require_pay_packet():
