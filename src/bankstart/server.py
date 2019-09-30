@@ -393,7 +393,6 @@ class EscapeRoomGame:
 class EchoServerClientProtocol(asyncio.Protocol):
     def __init__(self):
         self.loop = asyncio.get_event_loop()
-        self.game = EscapeRoomGame()
         self.deserializer = PacketType.Deserializer()
 
     def connection_made(self, transport):
@@ -423,7 +422,8 @@ class EchoServerClientProtocol(asyncio.Protocol):
                     res_temp = game_packet.create_game_response_packet(result, self.game.status)
                     self.transport.write(res_temp.__serialize__())
 
-                self.game.create_game(output = send_message())
+                self.game = EscapeRoomGame(output=send_message)
+                self.game.create_game()
                 self.game.start()
 
 
