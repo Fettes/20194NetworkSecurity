@@ -49,6 +49,7 @@ class EchoClientProtocol(asyncio.Protocol):
                 print(clientPacket.error)
 
             if isinstance(clientPacket,GamePaymentRequestPacket):
+                print("xxxxxx")
                 print(clientPacket.unique_id)
                 print(clientPacket.account)
                 print(clientPacket.amount)
