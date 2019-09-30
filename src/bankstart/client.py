@@ -2,7 +2,9 @@ from CipherUtil import loadCertFromFile
 from BankCore import LedgerLineStorage, LedgerLine
 from OnlineBank import BankClientProtocol, OnlineBankConfig
 import playground, time
-import getpass, sys, os, asyncio
+import getpass, os, asyncio
+import sys
+sys.path.insert(1,"../../../../netsec_env/BitPoints-Bank-Playground3/src/")
 
 from playground.network.packet import PacketType
 from autograder_ex6_packets import AutogradeStartTest
