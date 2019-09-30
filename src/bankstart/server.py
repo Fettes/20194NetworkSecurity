@@ -409,7 +409,7 @@ class EchoServerClientProtocol(asyncio.Protocol):
 
             if isinstance(serverPacket, GameCommandPacket):
                 print(serverPacket.command_line)
-                output = self.game.command(serverPacket.command_line)
+                self.game.command(serverPacket.command_line)
 
             if isinstance(serverPacket, GamePaymentResponsePacket):
                 receipt, receipt_sig = process_game_pay_packet(serverPacket)
