@@ -96,12 +96,11 @@ def process_game_pay_packet(pkt):
 
 
 def create_game_response(response, status):
-    print("11111111111111111")
     return GameResponsePacket(res=response, sta=status)
 
 
 def process_game_response(pkt):
-    return pkt.res
+    return pkt.res, pkt.sta
 
 
 def create_game_command(command):
