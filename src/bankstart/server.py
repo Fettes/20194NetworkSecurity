@@ -396,23 +396,35 @@ class EchoServerClientProtocol(asyncio.Protocol):
 
     def connection_made(self, transport):
         self.transport = transport
-        self.game.output = self.send_message
-        self.game.create_game()
-        self.game.start()
-        self.loop.create_task(self.agent())
 
     def data_received(self, data):
         self.deserializer.update(data)
         for serverPacket in self.deserializer.nextPackets():
-            print(serverPacket.command_line)
-            output = self.game.command(serverPacket.command_line)
+            if isinstance(serverPacket, GameInitRequestPacket):
+                username = process_game_init(serverPacket)
+                print(username)
+                game_packet = create_game_require_pay_packet('1234567890987654321', "tfeng7_account", 5)
+                self.transport.write(game_packet.__serialize__())
 
-    def send_message(self, result):
-        print(result)
-        time.sleep(0.5)
-        game_packet = GameResponsePacket()
-        res_temp = game_packet.create_game_response_packet(result, self.game.status)
-        self.transport.write(res_temp.__serialize__())
+            if isinstance(serverPacket, GameCommandPacket):
+                print(serverPacket.command_line)
+                output = self.game.command(serverPacket.command_line)
+
+            if isinstance(serverPacket, GamePaymentResponsePacket):
+                receipt, receipt_sig = process_game_pay_packet(serverPacket)
+
+                def send_message(self, result):
+                    print(result)
+                    time.sleep(0.5)
+                    game_packet = GameResponsePacket()
+                    res_temp = game_packet.create_game_response_packet(result, self.game.status)
+                    self.transport.write(res_temp.__serialize__())
+
+                self.game.output = self.send_message
+                self.game.create_game()
+                self.game.start()
+                self.loop.create_task(self.agent())
+
 
     async def agent(self):
         await asyncio.wait([asyncio.ensure_future(a) for a in self.game.agents])
