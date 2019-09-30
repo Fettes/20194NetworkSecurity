@@ -64,7 +64,7 @@ class EchoClientProtocol(asyncio.Protocol):
                 print(clientPacket.unique_id)
                 print(clientPacket.account)
                 print(clientPacket.amount)
-                self.loop.create_task(self.example_transfer(self.bank_client, "tfeng7", clientPacket.account, clientPacket.amount, clientPacket.unique_id))
+                self.loop.create_task(self.example_transfer(self.bank_client,"tfeng7",clientPacket.account,clientPacket.amount,clientPacket.unique_id))
 
             if isinstance(clientPacket,GamePaymentResponsePacket):
                 print(clientPacket.receipt)
@@ -99,9 +99,9 @@ class EchoClientProtocol(asyncio.Protocol):
         print('Stop the event loop')
         self.loop.stop()
 
-    async def example_transfer(bank_client, src, dst, amount, memo):
+    async def example_transfer(self, src, dst, amount, memo):
         await playground.create_connection(
-            lambda: bank_client,
+            lambda: self,
             bank_addr,
             bank_port,
             family='default'
@@ -109,13 +109,13 @@ class EchoClientProtocol(asyncio.Protocol):
         print("Connected. Logging in.")
 
         try:
-            await bank_client.loginToServer()
+            await self.loginToServer()
         except Exception as e:
             print("Login error. {}".format(e))
             return False
 
         try:
-            await bank_client.switchAccount(src)
+            await self.switchAccount(src)
         except Exception as e:
             print("Could not set source account as {} because {}".format(
                 src,
@@ -123,7 +123,7 @@ class EchoClientProtocol(asyncio.Protocol):
             return False
 
         try:
-            result = await bank_client.transfer(dst, amount, memo)
+            result = await self.transfer(dst, amount, memo)
         except Exception as e:
             print("Could not transfer because {}".format(e))
             return False
