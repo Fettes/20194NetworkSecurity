@@ -9,7 +9,7 @@ bank_addr = "20194.0.0.19000"
 bank_port = 777
 bank_stack = "default"
 bank_username = "tfeng7"
-certPath = os.path.join(bankconfig.path(), "bank.cert")
+certPath = "/home/student_20194/Tianshi_Feng/20194_online_bank.cert"
 bank_cert = loadCertFromFile(certPath)
 
 
@@ -66,3 +66,4 @@ async def paymentInit(src, dst, amount, memo):
     if result:
         example_verify(bank_client, result.receipt, result.receipt_sig, dst, amount, memo)
         print("Receipt verified.")
+        return result.receipt, result.receipt_sig
