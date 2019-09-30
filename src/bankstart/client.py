@@ -12,7 +12,7 @@ import escape_room_packets
 from escape_room_packets import *
 
 bankconfig = OnlineBankConfig()
-bank_addr = "20194.0.0.19004"
+bank_addr = "20194.0.0.19000"
 bank_port = 777
 bank_stack = "default"
 bank_username = "tfeng7"
@@ -64,7 +64,7 @@ class EchoClientProtocol(asyncio.Protocol):
                 print(clientPacket.unique_id)
                 print(clientPacket.account)
                 print(clientPacket.amount)
-                self.loop.create_task(self.example_transfer(self.bank_client,"tfeng7",clientPacket.account,clientPacket.amount,clientPacket.unique_id))
+                self.loop.create_task(self.example_transfer("tfeng7",clientPacket.account,clientPacket.amount,clientPacket.unique_id))
 
             if isinstance(clientPacket,GamePaymentResponsePacket):
                 print(clientPacket.receipt)
