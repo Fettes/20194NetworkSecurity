@@ -70,7 +70,7 @@ class EchoClientProtocol(asyncio.Protocol):
                 time.sleep(1)
 
     async def CreatePayment(self, account, amount, unique_id):
-        result = await paymentInit("tfeng7", account, amount, unique_id)
+        result = await paymentInit("tfeng7_account", account, amount, unique_id)
         print("result" + result)
         Message, receipt, receipt_sig = result
         game_packet = create_game_pay_packet(receipt, receipt_sig)
