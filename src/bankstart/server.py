@@ -416,7 +416,7 @@ class EchoServerClientProtocol(asyncio.Protocol):
                 def send_message(result):
                     print(result)
                     time.sleep(0.5)
-                    res_temp = create_game_response_packet(result, self.game.status)
+                    res_temp = create_game_response(result, self.game.status)
                     self.transport.write(res_temp.__serialize__())
 
                 self.game = EscapeRoomGame(output=send_message)
