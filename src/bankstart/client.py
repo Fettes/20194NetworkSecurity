@@ -99,9 +99,9 @@ class EchoClientProtocol(asyncio.Protocol):
         print('Stop the event loop')
         self.loop.stop()
 
-    async def example_transfer(self, src, dst, amount, memo):
+    async def example_transfer(bank_client, src, dst, amount, memo):
         await playground.create_connection(
-            lambda: self,
+            lambda: bank_client,
             bank_addr,
             bank_port,
             family='default'
@@ -109,13 +109,13 @@ class EchoClientProtocol(asyncio.Protocol):
         print("Connected. Logging in.")
 
         try:
-            await self.loginToServer()
+            await bank_client.loginToServer()
         except Exception as e:
             print("Login error. {}".format(e))
             return False
 
         try:
-            await self.switchAccount(src)
+            await bank_client.switchAccount(src)
         except Exception as e:
             print("Could not set source account as {} because {}".format(
                 src,
@@ -123,7 +123,7 @@ class EchoClientProtocol(asyncio.Protocol):
             return False
 
         try:
-            result = await self.transfer(dst, amount, memo)
+            result = await bank_client.transfer(dst, amount, memo)
         except Exception as e:
             print("Could not transfer because {}".format(e))
             return False
