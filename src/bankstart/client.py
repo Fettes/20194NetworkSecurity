@@ -66,12 +66,16 @@ class EchoClientProtocol(asyncio.Protocol):
                     print(unique_id)
                     print(account)
                     print(amount)
-                    result = await paymentInit("tfeng7", account, amount, unique_id)
-                    print("result"+result)
-                    Message, receipt, receipt_sig = result
-                    game_packet = create_game_pay_packet(receipt, receipt_sig)
-                    self.transport.write(game_packet.__serialize__())
+                    self.loop.create_task(self.CreatePayment(account, amount, unique_id))
+
                 time.sleep(1)
+
+    async def CreatePayment(self, account, amount, unique_id):
+        result = await paymentInit("tfeng7", account, amount, unique_id)
+        print("result" + result)
+        Message, receipt, receipt_sig = result
+        game_packet = create_game_pay_packet(receipt, receipt_sig)
+        self.transport.write(game_packet.__serialize__())
 
     def connection_lost(self, exc):
         print('The server closed the connection')
