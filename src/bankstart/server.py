@@ -8,7 +8,6 @@ import playground
 from playground.network.packet import PacketType
 from autograder_ex6_packets import AutogradeTestStatus
 
-
 from escape_room_packets import *
 from payProcedure import *
 
@@ -417,15 +416,13 @@ class EchoServerClientProtocol(asyncio.Protocol):
                 def send_message(result):
                     print(result)
                     time.sleep(0.5)
-                    game_packet = GameResponsePacket()
-                    res_temp = game_packet.create_game_response_packet(result, self.game.status)
+                    res_temp = create_game_response_packet(result, self.game.status)
                     self.transport.write(res_temp.__serialize__())
 
                 self.game = EscapeRoomGame(output=send_message)
                 self.game.create_game()
                 self.game.start()
                 self.loop.create_task(self.agent())
-
 
     async def agent(self):
         await asyncio.wait([asyncio.ensure_future(a) for a in self.game.agents])
