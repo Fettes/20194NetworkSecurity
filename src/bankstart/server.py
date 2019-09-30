@@ -398,6 +398,7 @@ class EchoServerClientProtocol(asyncio.Protocol):
 
     def connection_made(self, transport):
         self.transport = transport
+        self.loop.create_task(self.agent())
 
     def data_received(self, data):
         self.deserializer.update(data)
@@ -415,17 +416,15 @@ class EchoServerClientProtocol(asyncio.Protocol):
             if isinstance(serverPacket, GamePaymentResponsePacket):
                 receipt, receipt_sig = process_game_pay_packet(serverPacket)
 
-                def send_message(self, result):
+                def send_message(result):
                     print(result)
                     time.sleep(0.5)
                     game_packet = GameResponsePacket()
                     res_temp = game_packet.create_game_response_packet(result, self.game.status)
                     self.transport.write(res_temp.__serialize__())
 
-                self.game.output = send_message
-                self.game.create_game()
+                self.game.create_game(output = send_message())
                 self.game.start()
-                self.loop.create_task(self.agent())
 
 
     async def agent(self):
