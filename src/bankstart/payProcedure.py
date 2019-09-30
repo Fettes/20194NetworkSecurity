@@ -64,6 +64,6 @@ async def paymentInit(src, dst, amount, memo):
     result = await example_transfer(bank_client, src, dst, amount, memo)
 
     if result:
-        example_verify(bank_client, result.receipt, result.receipt_sig, dst, amount, memo)
+        example_verify(bank_client, result.Receipt, result.ReceiptSignature, dst, amount, memo)
         print("Receipt verified.")
         return result.receipt, result.receipt_sig
