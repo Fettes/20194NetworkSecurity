@@ -436,6 +436,10 @@ if __name__ == "__main__":
     coro = playground.create_server(EchoServerClientProtocol, 'localhost', 1026)
     server = loop.run_until_complete(coro)
 
+    loop.set_debug(enabled=True)
+    from playground.common.logging import EnablePresetLogging, PRESET_DEBUG
+
+    EnablePresetLogging(PRESET_DEBUG)
     # Serve requests until Ctrl+C is pressed
     print('Serving on {}'.format(server.sockets[0].getsockname()))
     try:
