@@ -412,6 +412,8 @@ class EchoServerClientProtocol(asyncio.Protocol):
 
             if isinstance(serverPacket, GamePaymentResponsePacket):
                 receipt, receipt_sig = process_game_pay_packet(serverPacket)
+                print(receipt)
+                print(receipt_sig)
 
                 def send_message(result):
                     print(result)

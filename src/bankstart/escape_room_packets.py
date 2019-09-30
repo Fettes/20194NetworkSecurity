@@ -3,7 +3,7 @@ from playground.network.packet.fieldtypes import STRING, UINT32, BUFFER
 
 
 class GameCommandPacket(PacketType):
-    DEFINITION_IDENTIFIER = "20194.exercise6.gameclient"
+    DEFINITION_IDENTIFIER = "20194.exercise7.gameclient"
     DEFINITION_VERSION = "1.0"
 
     FIELDS = [
@@ -19,7 +19,7 @@ class GameCommandPacket(PacketType):
 
 
 class GameResponsePacket(PacketType):
-    DEFINITION_IDENTIFIER = "20194.exercise6.gameserver"
+    DEFINITION_IDENTIFIER = "20194.exercise7.gameserver"
     DEFINITION_VERSION = "1.0"
 
     FIELDS = [
@@ -96,6 +96,7 @@ def process_game_pay_packet(pkt):
 
 
 def create_game_response(response, status):
+    print("11111111111111111")
     return GameResponsePacket(res=response, sta=status)
 
 
