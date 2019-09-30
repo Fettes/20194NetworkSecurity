@@ -397,7 +397,6 @@ class EchoServerClientProtocol(asyncio.Protocol):
 
     def connection_made(self, transport):
         self.transport = transport
-        self.loop.create_task(self.agent())
 
     def data_received(self, data):
         self.deserializer.update(data)
@@ -425,6 +424,7 @@ class EchoServerClientProtocol(asyncio.Protocol):
                 self.game = EscapeRoomGame(output=send_message)
                 self.game.create_game()
                 self.game.start()
+                self.loop.create_task(self.agent())
 
 
     async def agent(self):
