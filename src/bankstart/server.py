@@ -7,8 +7,10 @@ import asyncio
 import playground
 from playground.network.packet import PacketType
 from autograder_ex6_packets import AutogradeTestStatus
-from escape_room_packets import GameCommandPacket
-from escape_room_packets import GameResponsePacket
+
+
+from escape_room_packets import *
+from payProcedure import *
 
 """
 Escape Room Core
