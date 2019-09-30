@@ -22,7 +22,7 @@ bank_cert = loadCertFromFile(certPath)
 class EchoClientProtocol(asyncio.Protocol):
     def __init__(self, loop):
         self.flag = 0
-        self.loop = loop
+        self.loop = asyncio.get_event_loop()
         self.deserializer = PacketType.Deserializer()
         self.command_list = ["look mirror", "get hairpin", "unlock chest with hairpin", "open chest",
                              "get hammer in chest", "hit flyingkey with hammer", "get key", "unlock door with key",
@@ -63,7 +63,7 @@ class EchoClientProtocol(asyncio.Protocol):
                 print(clientPacket.unique_id)
                 print(clientPacket.account)
                 print(clientPacket.amount)
-                self.example_transfer(self.bank_client, "tfeng7", clientPacket.account, clientPacket.amount, clientPacket.unique_id)
+                self.loop.create_task(self.example_transfer(self.bank_client, "tfeng7", clientPacket.account, clientPacket.amount, clientPacket.unique_id))
 
             if isinstance(clientPacket,GamePaymentResponsePacket):
                 print(clientPacket.receipt)
@@ -98,7 +98,7 @@ class EchoClientProtocol(asyncio.Protocol):
         print('Stop the event loop')
         self.loop.stop()
 
-    def example_transfer(bank_client, src, dst, amount, memo):
+    async def example_transfer(bank_client, src, dst, amount, memo):
         await playground.create_connection(
             lambda: bank_client,
             bank_addr,
