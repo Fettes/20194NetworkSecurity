@@ -6,6 +6,7 @@ from playground.network.packet import PacketType
 from autograder_ex6_packets import AutogradeStartTest
 from autograder_ex6_packets import AutogradeTestStatus
 import escape_room_packets
+from escape_room_packets import *
 
 
 
