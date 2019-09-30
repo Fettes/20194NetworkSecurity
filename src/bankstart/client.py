@@ -4,7 +4,6 @@ from OnlineBank import BankClientProtocol, OnlineBankConfig
 import playground, time
 import getpass, os, asyncio
 import sys
-sys.path.insert(1,"../../../../netsec_env/BitPoints-Bank-Playground3/src/")
 
 from playground.network.packet import PacketType
 from autograder_ex6_packets import AutogradeStartTest
@@ -13,10 +12,10 @@ import escape_room_packets
 from escape_room_packets import *
 
 bankconfig = OnlineBankConfig()
-bank_addr = bankconfig.get_parameter("CLIENT", "bank_addr")
-bank_port = int(bankconfig.get_parameter("CLIENT", "bank_port"))
-bank_stack = bankconfig.get_parameter("CLIENT", "stack", "default")
-bank_username = bankconfig.get_parameter("CLIENT", "username")
+bank_addr = "20194.0.0.19004"
+bank_port = 777
+bank_stack = "default"
+bank_username = "tfeng7"
 certPath = os.path.join(bankconfig.path(), "bank.cert")
 bank_cert = loadCertFromFile(certPath)
 
