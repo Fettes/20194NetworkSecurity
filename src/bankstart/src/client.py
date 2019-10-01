@@ -41,9 +41,8 @@ class EchoClientProtocol(asyncio.Protocol):
                 print(clientPacket.client_status)
                 print(clientPacket.server_status)
                 print(clientPacket.error)
-
-                self.command_packet = create_game_command("okkkkkk")
-                self.transport.write(self.command_packet.__serialize__())
+                user_packet = create_game_init_packet("tfeng7")
+                self.transport.write(user_packet.__serialize__())
 
             if isinstance(clientPacket, GameRequirePayPacket):
                 unique_id, account, amount = process_game_require_pay_packet(clientPacket)
