@@ -35,6 +35,7 @@ class EchoClientProtocol(asyncio.Protocol):
 
     def data_received(self, data):
         self.deserializer.update(data)
+        print(data)
         for clientPacket in self.deserializer.nextPackets():
             if isinstance(clientPacket, AutogradeTestStatus):
                 print(clientPacket.submit_status)
