@@ -32,6 +32,10 @@ class EchoClientProtocol(asyncio.Protocol):
 
         self.command_packet = create_game_command("okkkkkk")
         self.transport.write(self.command_packet.__serialize__())
+        self.command_packet = create_game_command("okkkkkk")
+        self.transport.write(self.command_packet.__serialize__())
+        self.command_packet = create_game_command("okkkkkk")
+        self.transport.write(self.command_packet.__serialize__())
 
 
     def data_received(self, data):
