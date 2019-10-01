@@ -399,17 +399,17 @@ class EchoServerClientProtocol(asyncio.Protocol):
     def data_received(self, data):
         self.deserializer.update(data)
         for serverPacket in self.deserializer.nextPackets():
-            if isinstance(serverPacket, GameInitRequestPacket):
+            if isinstance(serverPacket, GameInitPacket):
                 username = process_game_init(serverPacket)
                 print(username)
                 game_packet = create_game_require_pay_packet('1234567890987654321', "tfeng7_account", 5)
                 self.transport.write(game_packet.__serialize__())
 
             if isinstance(serverPacket, GameCommandPacket):
-                print(serverPacket.command_line)
-                self.game.command(serverPacket.command_line)
+                print(serverPacket.command)
+                self.game.command(serverPacket.command)
 
-            if isinstance(serverPacket, GamePaymentResponsePacket):
+            if isinstance(serverPacket, GamePayPacket):
                 receipt, receipt_sig = process_game_pay_packet(serverPacket)
                 print(receipt)
                 print(receipt_sig)
