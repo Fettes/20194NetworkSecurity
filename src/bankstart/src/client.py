@@ -49,7 +49,7 @@ class EchoClientProtocol(asyncio.Protocol):
                 self.loop.create_task(self.CreatePayment(account, amount, unique_id))
 
             if isinstance(clientPacket, GameResponsePacket):
-                res_temp = clientPacket.res
+                res_temp = clientPacket.response
                 print(clientPacket.res)
                 if self.flag <= len(self.command_list) - 1:
                     if res_temp.split()[-1] == "wall" or res_temp.split()[-1] == "floor" or res_temp.split()[-1] == "ceiling":
