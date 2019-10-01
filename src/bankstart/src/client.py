@@ -3,15 +3,13 @@ import playground, time
 import getpass, os, asyncio
 import sys
 
-from autograder_ex8_packets import AutogradeStartTest
-from autograder_ex8_packets import AutogradeTestStatus
-
+from autograder_ex8_packets import *
 from escape_room_packets import *
 from payProcedure import *
 
 
 class EchoClientProtocol(asyncio.Protocol):
-    def __init__(self, loop):
+    def __init__(self):
         self.flag = 0
         self.loop = asyncio.get_event_loop()
         self.deserializer = PacketType.Deserializer()
@@ -40,11 +38,12 @@ class EchoClientProtocol(asyncio.Protocol):
                 print(clientPacket.client_status)
                 print(clientPacket.server_status)
                 print(clientPacket.error)
-                user_packet = create_game_init_packet("tfeng7")
+                user_packet = create_game_init_packet("tfeng7_account")
                 self.transport.write(user_packet.__serialize__())
-
+                print("xxx")
 
             if isinstance(clientPacket, GameRequirePayPacket):
+                print("11111111111111111")
                 unique_id, account, amount = process_game_require_pay_packet(clientPacket)
                 print(unique_id)
                 print(account)
