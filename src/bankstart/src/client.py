@@ -30,7 +30,8 @@ class EchoClientProtocol(asyncio.Protocol):
         #     packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
 
-
+        user_packet = create_game_init_packet("tfeng7")
+        self.transport.write(user_packet.__serialize__())
 
     def data_received(self, data):
         self.deserializer.update(data)
@@ -41,8 +42,7 @@ class EchoClientProtocol(asyncio.Protocol):
                 print(clientPacket.client_status)
                 print(clientPacket.server_status)
                 print(clientPacket.error)
-                user_packet = create_game_init_packet("tfeng7")
-                self.transport.write(user_packet.__serialize__())
+
 
             if isinstance(clientPacket, GameRequirePayPacket):
                 unique_id, account, amount = process_game_require_pay_packet(clientPacket)
