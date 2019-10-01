@@ -3,8 +3,8 @@ import playground, time
 import getpass, os, asyncio
 import sys
 
-from autograder_ex6_packets import AutogradeStartTest
-from autograder_ex6_packets import AutogradeTestStatus
+from autograder_ex8_packets import AutogradeStartTest
+from autograder_ex8_packets import AutogradeTestStatus
 
 from escape_room_packets import *
 from payProcedure import *
@@ -26,8 +26,8 @@ class EchoClientProtocol(asyncio.Protocol):
         packetClient.team = 4
         packetClient.email = "tfeng7@jhu.edu"
         packetClient.port = 1026
-        with open("escape_room_packets.py", "rb") as f:
-            packetClient.packet_file = f.read()
+        # with open("escape_room_packets.py", "rb") as f:
+        #     packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
 
         self.command_packet = GameCommandPacket.create_game_command_packet("Submit")
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     # from playground.common.logging import EnablePresetLogging, PRESET_DEBUG
     #
     # EnablePresetLogging(PRESET_DEBUG)
-    coro = playground.create_connection(lambda: EchoClientProtocol(loop), '20194.0.0.19000', 19007)
+    coro = playground.create_connection(lambda: EchoClientProtocol(loop), '20194.0.0.19000', 19008)
     # coro = loop.create_connection(lambda: EchoClientProtocol(loop), 'localhost', 1024)
     loop.run_until_complete(coro)
     loop.run_forever()

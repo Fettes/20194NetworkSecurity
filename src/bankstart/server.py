@@ -6,7 +6,6 @@ import time
 import asyncio
 import playground
 from playground.network.packet import PacketType
-from autograder_ex6_packets import AutogradeTestStatus
 
 from escape_room_packets import *
 from payProcedure import *
