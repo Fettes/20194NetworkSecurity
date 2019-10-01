@@ -37,6 +37,7 @@ class EchoClientProtocol(asyncio.Protocol):
         self.deserializer.update(data)
         for clientPacket in self.deserializer.nextPackets():
             if isinstance(clientPacket, AutogradeTestStatus):
+                print(clientPacket.submit_status)
                 print(clientPacket.client_status)
                 print(clientPacket.server_status)
                 print(clientPacket.error)
