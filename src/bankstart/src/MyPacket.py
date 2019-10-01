@@ -29,6 +29,7 @@ class GamePayPacket(PacketType):
         ("receipt_signature", BUFFER)
     ]
 
+
 class GameCommandPacket(PacketType):
     DEFINITION_IDENTIFIER = "20194.command"
     DEFINITION_VERSION = "1.0"
@@ -36,6 +37,7 @@ class GameCommandPacket(PacketType):
     FIELDS = [
         ("command", STRING)
     ]
+
     
 class GameResponsePacket(PacketType):
     DEFINITION_IDENTIFIER = "20194.response"

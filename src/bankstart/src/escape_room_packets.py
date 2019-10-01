@@ -1,86 +1,67 @@
 from playground.network.packet import PacketType
-from playground.network.packet.fieldtypes import STRING, UINT32, BUFFER
+from playground.network.packet.fieldtypes import STRING, UINT8, BUFFER, UINT16, BOOL
+from playground.network.packet.fieldtypes.attributes import Optional
 
 
-class GameCommandPacket(PacketType):
-    DEFINITION_IDENTIFIER = "20194.exercise7.gameclient"
+class GameInitPacket(PacketType):
+    DEFINITION_IDENTIFIER = "20194.GameInitPacket"
     DEFINITION_VERSION = "1.0"
 
     FIELDS = [
-        ("command_line", STRING),
-    ]
-
-    @classmethod
-    def create_game_command_packet(cls, s):
-        return cls(command_line=s)
-
-    def command(self):
-        return self.command_line
-
-
-class GameResponsePacket(PacketType):
-    DEFINITION_IDENTIFIER = "20194.exercise7.gameserver"
-    DEFINITION_VERSION = "1.0"
-
-    FIELDS = [
-        ("res", STRING),
-        ("sta", STRING),
-    ]
-
-    @classmethod
-    def create_game_response_packet(cls, response, status):
-        return cls(res=response, sta=status)
-
-    def game_over(self):
-        return self.sta != "playing"
-
-    def status(self):
-        return self.sta
-
-    def response(self):
-        return self.res
-
-
-class GameInitRequestPacket(PacketType):
-    DEFINITION_IDENTIFIER = "20194.exercise7.gameinit"
-    DEFINITION_VERSION = "1.0"
-
-    FIELDS = [
-        ("username_string", STRING),
+        ("username", STRING),
     ]
 
 
-class GamePaymentRequestPacket(PacketType):
-    DEFINITION_IDENTIFIER = "20194.exercise7.gamepaymentrequest"
+class GameRequirePayPacket(PacketType):
+    DEFINITION_IDENTIFIER = "20194.GameRequirePayPacket"
     DEFINITION_VERSION = "1.0"
 
     FIELDS = [
         ("unique_id", STRING),
         ("account", STRING),
-        ("amount", UINT32)
+        ("amount", UINT16)
     ]
 
 
-class GamePaymentResponsePacket(PacketType):
-    DEFINITION_IDENTIFIER = "20194.exercise7.gamepaymentresponse"
+class GamePayPacket(PacketType):
+    DEFINITION_IDENTIFIER = "20194.GamePayPacket"
     DEFINITION_VERSION = "1.0"
 
     FIELDS = [
         ("receipt", BUFFER),
-        ("receipt_sig", BUFFER),
+        ("receipt_signature", BUFFER),
+    ]
+
+
+class GameCommandPacket(PacketType):
+    DEFINITION_IDENTIFIER = "20194.command"
+    DEFINITION_VERSION = "1.0"
+
+    FIELDS = [
+        ("command", STRING)
+    ]
+
+
+class GameResponsePacket(PacketType):
+    DEFINITION_IDENTIFIER = "20194.response"
+    DEFINITION_VERSION = "1.0"
+
+    FIELDS = [
+        ("response", STRING),
+        ("status", STRING),
     ]
 
 
 def create_game_init_packet(username):
-    return GameInitRequestPacket(username_string=username)
+    return GameInitPacket(username=username)
 
 
 def process_game_init(pkt):
-    return "tfeng7"
+    return pkt.username
 
 
 def create_game_require_pay_packet(unique_id, account, amount):
-    return GamePaymentRequestPacket(unique_id=unique_id, account=account, amount=amount)
+    return GameRequirePayPacket(unique_id=unique_id, account=account, amount=amount)
 
 
 def process_game_require_pay_packet(pkt):
@@ -88,24 +69,24 @@ def process_game_require_pay_packet(pkt):
 
 
 def create_game_pay_packet(receipt, receipt_signature):
-    return GamePaymentResponsePacket(receipt=receipt, receipt_sig=receipt_signature)
+    return GamePayPacket(receipt=receipt, receipt_signature=receipt_signature)
 
 
 def process_game_pay_packet(pkt):
-    return pkt.receipt, pkt.receipt_sig
+    return pkt.receipt, pkt.receipt_signature
 
 
 def create_game_response(response, status):
-    return GameResponsePacket(res=response, sta=status)
+    return GameResponsePacket(response=response, status=status)
 
 
 def process_game_response(pkt):
-    return pkt.res, pkt.sta
+    return pkt.response, pkt.status
 
 
 def create_game_command(command):
-    return GameCommandPacket(command_line=command)
+    return GameCommandPacket(command=command)
 
 
 def process_game_command(pkt):
-    return pkt.command_line
+    return pkt.command

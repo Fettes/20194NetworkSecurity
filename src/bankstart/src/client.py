@@ -30,7 +30,7 @@ class EchoClientProtocol(asyncio.Protocol):
             packetClient.packet_file = f.read()
         self.transport.write(packetClient.__serialize__())
 
-        self.command_packet = GameCommandPacket.create_game_command_packet("Submit")
+        self.command_packet = create_game_command("Submit")
         self.transport.write(self.command_packet.__serialize__())
 
     def data_received(self, data):
@@ -41,7 +41,7 @@ class EchoClientProtocol(asyncio.Protocol):
                 print(clientPacket.server_status)
                 print(clientPacket.error)
 
-            if isinstance(clientPacket, GamePaymentRequestPacket):
+            if isinstance(clientPacket, GameRequirePayPacket):
                 unique_id, account, amount = process_game_require_pay_packet(clientPacket)
                 print(unique_id)
                 print(account)
@@ -56,14 +56,12 @@ class EchoClientProtocol(asyncio.Protocol):
                         continue
                     if res_temp == "You can't hit that!":
                         self.flag = self.flag - 1
-                        game_packet = GameCommandPacket()
-                        command = game_packet.create_game_command_packet(self.command_list[self.flag])
+                        command = create_game_command(self.command_list[self.flag])
                         self.transport.write(command.__serialize__())
                         print(self.command_list[self.flag])
                         self.flag = self.flag + 1
                     else:
-                        game_packet = GameCommandPacket()
-                        command = game_packet.create_game_command_packet(self.command_list[self.flag])
+                        command = create_game_command(self.command_list[self.flag])
                         self.transport.write(command.__serialize__())
                         print(self.command_list[self.flag])
                         self.flag = self.flag + 1
@@ -88,7 +86,7 @@ if __name__ == "__main__":
     # from playground.common.logging import EnablePresetLogging, PRESET_DEBUG
     #
     # EnablePresetLogging(PRESET_DEBUG)
-    coro = playground.create_connection(lambda: EchoClientProtocol(loop), '20194.0.0.19000', 19007)
+    coro = playground.create_connection(lambda: EchoClientProtocol(loop), '20194.0.0.19000', 19008)
     # coro = loop.create_connection(lambda: EchoClientProtocol(loop), 'localhost', 1024)
     loop.run_until_complete(coro)
     loop.run_forever()
