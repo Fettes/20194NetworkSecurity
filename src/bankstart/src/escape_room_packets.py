@@ -4,7 +4,7 @@ from playground.network.packet.fieldtypes.attributes import Optional
 
 
 class GameInitPacket(PacketType):
-    DEFINITION_IDENTIFIER = "20194.GameInitPacket"
+    DEFINITION_IDENTIFIER = "initpacket"
     DEFINITION_VERSION = "1.0"
 
     FIELDS = [
@@ -13,7 +13,7 @@ class GameInitPacket(PacketType):
 
 
 class GameRequirePayPacket(PacketType):
-    DEFINITION_IDENTIFIER = "20194.GameRequirePayPacket"
+    DEFINITION_IDENTIFIER = "requirepaypacket"
     DEFINITION_VERSION = "1.0"
 
     FIELDS = [
@@ -24,7 +24,7 @@ class GameRequirePayPacket(PacketType):
 
 
 class GamePayPacket(PacketType):
-    DEFINITION_IDENTIFIER = "20194.GamePayPacket"
+    DEFINITION_IDENTIFIER = "paypacket"
     DEFINITION_VERSION = "1.0"
 
     FIELDS = [
@@ -34,7 +34,7 @@ class GamePayPacket(PacketType):
 
 
 class GameCommandPacket(PacketType):
-    DEFINITION_IDENTIFIER = "20194.command"
+    DEFINITION_IDENTIFIER = "commandpacket"
     DEFINITION_VERSION = "1.0"
 
     FIELDS = [
@@ -43,7 +43,7 @@ class GameCommandPacket(PacketType):
 
 
 class GameResponsePacket(PacketType):
-    DEFINITION_IDENTIFIER = "20194.response"
+    DEFINITION_IDENTIFIER = "responsepacket"
     DEFINITION_VERSION = "1.0"
 
     FIELDS = [
