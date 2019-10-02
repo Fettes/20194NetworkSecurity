@@ -20,7 +20,6 @@ class EchoClientProtocol(asyncio.Protocol):
     def connection_made(self, transport):
         self.transport = transport
         packetClient = AutogradeStartTest()
-        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
         packetClient.name = "Tianshi Feng"
         packetClient.team = 4
         packetClient.email = "tfeng7@jhu.edu"
@@ -39,12 +38,10 @@ class EchoClientProtocol(asyncio.Protocol):
                 print(clientPacket.client_status)
                 print(clientPacket.server_status)
                 print(clientPacket.error)
-                user_packet = GameInitPacket(username="tfeng7")
+                user_packet = create_game_init_packet("tfeng7")
                 self.transport.write(user_packet.__serialize__())
-                print("xxx")
 
             if isinstance(clientPacket, GameRequirePayPacket):
-                print("11111111111111111")
                 unique_id, account, amount = process_game_require_pay_packet(clientPacket)
                 print(unique_id)
                 print(account)
