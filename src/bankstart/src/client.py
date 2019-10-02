@@ -38,7 +38,7 @@ class EchoClientProtocol(asyncio.Protocol):
                 print(clientPacket.client_status)
                 print(clientPacket.server_status)
                 print(clientPacket.error)
-                user_packet = create_game_init_packet("tfeng7_account")
+                user_packet = GameInitPacket(username="tfeng7")
                 self.transport.write(user_packet.__serialize__())
                 print("xxx")
 
