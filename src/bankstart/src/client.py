@@ -20,6 +20,7 @@ class EchoClientProtocol(asyncio.Protocol):
     def connection_made(self, transport):
         self.transport = transport
         packetClient = AutogradeStartTest()
+        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
         packetClient.name = "Tianshi Feng"
         packetClient.team = 4
         packetClient.email = "tfeng7@jhu.edu"
