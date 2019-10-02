@@ -19,7 +19,7 @@ class GameRequirePayPacket(PacketType):
     FIELDS = [
         ("unique_id", STRING),
         ("account", STRING),
-        ("amount", UINT16)
+        ("amount", UINT8)
     ]
 
 
